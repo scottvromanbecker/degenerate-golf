@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Degenerate Golf Games</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+        :root{--masters-green:#006747;--masters-dark:#004d35;--masters-yellow:#f5d130;--masters-cream:#fdf6e3;--leader-green:#1b8c5a;--behind-red:#c41e3a;--gold:#d4af37;--silver:#a8a8a8;--bronze:#cd7f32;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Source Sans Pro',sans-serif;background:linear-gradient(180deg,var(--masters-dark) 0%,var(--masters-green) 50%,var(--masters-dark) 100%);min-height:100vh;color:#333;}
+        .header{background:linear-gradient(180deg,#003326 0%,var(--masters-dark) 100%);padding:25px 15px;text-align:center;border-bottom:4px solid var(--masters-yellow);}
+        .header h1{font-family:'Playfair Display',serif;color:var(--masters-yellow);font-size:1.6rem;letter-spacing:2px;text-transform:uppercase;}
+        .header .year-badge{display:inline-block;background:var(--masters-yellow);color:var(--masters-dark);padding:6px 20px;border-radius:20px;font-weight:700;margin-top:10px;}
+        .container{max-width:1200px;margin:0 auto;padding:15px 10px;}
+        .last-updated{text-align:center;color:var(--masters-cream);font-size:0.8rem;margin-bottom:15px;}
+        .money-banner{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-radius:12px;padding:15px;margin-bottom:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+        .money-card{text-align:center;padding:12px 8px;border-radius:8px;background:rgba(255,255,255,0.05);}
+        .money-card .player-name{color:var(--masters-yellow);font-size:0.95rem;font-weight:600;margin-bottom:5px;}
+        .money-card .amount{font-size:1.5rem;font-weight:700;}
+        .money-card .amount.positive{color:#4ade80;}.money-card .amount.negative{color:#f87171;}.money-card .amount.even{color:#94a3b8;}
+        .money-card .breakdown{font-size:0.7rem;color:#94a3b8;margin-top:3px;}
+        .games-grid{display:flex;flex-direction:column;gap:15px;margin-bottom:20px;}
+        .game-card{background:var(--masters-cream);border-radius:12px;overflow:hidden;}
+        .game-card .card-header{background:var(--masters-green);color:white;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;}
+        .game-card .card-header h3{font-family:'Playfair Display',serif;font-size:1rem;}
+        .game-card .card-header .amount{background:var(--masters-yellow);color:var(--masters-dark);padding:3px 10px;border-radius:12px;font-weight:700;font-size:0.8rem;}
+        .game-card .card-body{padding:15px;}
+        .game-card .game-description{font-size:0.8rem;color:#666;margin-bottom:12px;padding-bottom:12px;border-bottom:1px dashed #ccc;}
+        .mini-leaderboard .player-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e0d9c8;}
+        .mini-leaderboard .player-row:last-child{border-bottom:none;}
+        .mini-leaderboard .rank{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;margin-right:10px;}
+        .mini-leaderboard .rank.first{background:var(--gold);color:white;}.mini-leaderboard .rank.second{background:var(--silver);color:white;}.mini-leaderboard .rank.third{background:var(--bronze);color:white;}.mini-leaderboard .rank.other{background:#e0d9c8;color:#666;}
+        .mini-leaderboard .player-info{display:flex;align-items:center;flex:1;}
+        .mini-leaderboard .name{font-weight:600;font-size:0.95rem;}
+        .mini-leaderboard .value{font-weight:700;font-size:1rem;}
+        .mini-leaderboard .value.leading{color:var(--leader-green);}
+        .card{background:var(--masters-cream);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+        .section-header{background:linear-gradient(90deg,var(--masters-dark) 0%,#005a3c 50%,var(--masters-dark) 100%);color:var(--masters-yellow);padding:12px 15px;font-family:'Playfair Display',serif;font-size:1.1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--masters-yellow);flex-wrap:wrap;gap:8px;}
+        .section-header .prize{background:var(--masters-yellow);color:var(--masters-dark);padding:4px 12px;border-radius:15px;font-weight:700;font-size:0.85rem;}
+        .game-desc-with-course{font-size:0.8rem;color:#666;padding:12px 15px;background:#f8f5ec;border-bottom:1px solid #e0d9c8;}
+        .course-info{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px dashed #ccc;}
+        .course-info img{height:35px;width:auto;}.course-info span{font-size:0.75rem;color:#888;font-style:italic;}
+        .best18-comparison{display:grid;grid-template-columns:1fr 1fr;}
+        .best18-player{padding:15px 10px;text-align:center;}.best18-player:first-child{border-right:2px solid #e0d9c8;}
+        .best18-player .name{font-size:1rem;font-weight:600;color:var(--masters-dark);margin-bottom:5px;}
+        .best18-player .total{font-size:2.5rem;font-weight:700;margin-bottom:3px;}
+        .best18-player .total.leading{color:var(--leader-green);}.best18-player .total.trailing{color:var(--behind-red);}
+        .best18-player .status{font-size:0.8rem;padding:3px 10px;border-radius:12px;display:inline-block;}
+        .best18-player .status.leader{background:var(--leader-green);color:white;}.best18-player .status.behind{background:var(--behind-red);color:white;}
+        .holes-section{padding:15px;}
+        .holes-label{font-size:0.75rem;color:#666;margin-bottom:8px;text-transform:uppercase;}
+        .holes-wrapper{overflow-x:auto;margin:0 -15px;padding:0 15px;}
+        .holes-grid{display:grid;grid-template-columns:repeat(18,minmax(28px,1fr));gap:2px;min-width:504px;}
+        .hole-score{padding:6px 2px;text-align:center;font-size:0.75rem;font-weight:600;border-radius:3px;background:#f0ebe0;}
+        .hole-score.best{background:var(--leader-green);color:white;}
+        .hole-number{font-size:0.6rem;color:#999;text-align:center;padding:2px;}
+        .hole-battle{background:var(--masters-cream);border-radius:12px;overflow:hidden;margin-bottom:20px;}
+        .battle-summary{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:15px;background:linear-gradient(135deg,#f8f5ec 0%,#f0ebe0 100%);border-bottom:2px solid #e0d9c8;}
+        .battle-player{text-align:center;}.battle-player .name{font-size:0.95rem;font-weight:600;color:var(--masters-dark);margin-bottom:3px;}
+        .battle-player .holes-won{font-size:2.2rem;font-weight:700;}
+        .battle-player .holes-won.leading{color:var(--leader-green);}.battle-player .holes-won.trailing{color:var(--behind-red);}
+        .battle-player .money{font-size:0.9rem;font-weight:600;margin-top:3px;}
+        .battle-player .money.up{color:var(--leader-green);}.battle-player .money.down{color:var(--behind-red);}
+        .battle-vs{font-size:1rem;color:#999;padding:0 15px;text-align:center;}
+        .battle-grid{padding:15px;overflow-x:auto;}
+        .battle-holes{display:grid;grid-template-columns:55px repeat(9,minmax(26px,1fr)) 40px repeat(9,minmax(26px,1fr)) 40px;gap:1px;min-width:580px;font-size:0.7rem;}
+        .battle-cell{padding:8px 2px;text-align:center;}
+        .battle-cell.header{background:var(--masters-green);color:white;font-weight:600;}
+        .battle-cell.player-label{background:var(--masters-dark);color:white;font-weight:600;text-align:left;padding-left:6px;font-size:0.65rem;}
+        .battle-cell.turn{background:#ddd;font-weight:600;color:#666;}
+        .battle-cell.score{background:white;font-weight:600;}
+        .battle-cell.score.winning{background:var(--leader-green);color:white;}.battle-cell.score.losing{background:var(--behind-red);color:white;}.battle-cell.score.tied{background:#ffd700;color:#333;}
+        .footer{text-align:center;padding:25px 15px;color:var(--masters-cream);}
+        .footer .flowers{font-size:1.5rem;margin-bottom:10px;}
+        .footer .tagline{font-family:'Playfair Display',serif;font-size:0.95rem;font-style:italic;opacity:0.9;}
+        @media(min-width:768px){.header{padding:35px 20px;}.header h1{font-size:2.4rem;letter-spacing:4px;}.container{padding:25px 20px;}.money-banner{grid-template-columns:repeat(4,1fr);padding:20px;}.money-card .amount{font-size:1.8rem;}.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.section-header{padding:15px 20px;font-size:1.2rem;flex-wrap:nowrap;}.best18-player .total{font-size:3.5rem;}.battle-player .holes-won{font-size:3rem;}.battle-holes{font-size:0.85rem;}}
+    </style>
+</head>
+<body>
+    <header class="header"><div class="header-content"><h1>⛳ Degenerate Golf Games ⛳</h1><div class="year-badge">2026 Season</div></div></header>
+    <div class="container">
+        <div class="last-updated" id="lastUpdated">Loading...</div>
+        <div class="money-banner" id="moneySummary"></div>
+        <div class="games-grid">
+            <div class="game-card"><div class="card-header"><h3>Net Score</h3><span class="amount">$250</span></div><div class="card-body"><div class="game-description">Year-long cumulative net score. Best total wins.</div><div class="mini-leaderboard" id="netScoreLeaderboard"></div></div></div>
+            <div class="game-card"><div class="card-header"><h3>WAMs & Snakes</h3><span class="amount">$100</span></div><div class="card-body"><div class="game-description"><strong>WAMs:</strong> Putts > flagstick (+1)<br><strong>Snakes:</strong> 3-putts (-1)</div><div class="mini-leaderboard" id="wamsLeaderboard"></div></div></div>
+            <div class="game-card"><div class="card-header"><h3>Greens in Regulation</h3><span class="amount">$100</span></div><div class="card-body"><div class="game-description">Becker vs Murph. Most greens hit wins.</div><div class="mini-leaderboard" id="girLeaderboard"></div></div></div>
+        </div>
+        <div class="card">
+            <div class="section-header"><span>Best 18 Composite</span><span class="prize">$250</span></div>
+            <div class="game-desc-with-course">Record lowest score on each hole throughout year.<div class="course-info"><img src="https://media.licdn.com/dms/image/v2/D560BAQFxh4cElejPuA/company-logo_200_200/B56ZjNs722HQAI-/0/1755797767696/santa_ana_country_club1901_logo?e=2147483647&v=beta&t=AiKeYCQX9ouzp2hX5BKN_TWhX6xU7a4ryTnUEXJRWuk" alt="Santa Ana CC"><span>Santa Ana Country Club only</span></div></div>
+            <div class="best18-comparison" id="best18Comparison"></div>
+            <div class="holes-section" id="best18Holes"></div>
+        </div>
+        <div class="hole-battle">
+            <div class="section-header"><span>Hole-by-Hole Battle</span><span class="prize">$50/hole</span></div>
+            <div class="game-desc-with-course">Lower cumulative score per hole wins $50. 18 holes = $900 total.<div class="course-info"><img src="https://media.licdn.com/dms/image/v2/D560BAQFxh4cElejPuA/company-logo_200_200/B56ZjNs722HQAI-/0/1755797767696/santa_ana_country_club1901_logo?e=2147483647&v=beta&t=AiKeYCQX9ouzp2hX5BKN_TWhX6xU7a4ryTnUEXJRWuk" alt="Santa Ana CC"><span>Santa Ana Country Club only</span></div></div>
+            <div class="battle-summary" id="battleSummary"></div>
+            <div class="battle-grid"><div class="battle-holes" id="battleGrid"></div></div>
+        </div>
+    </div>
+    <footer class="footer"><div class="flowers">🌸 🏌️ 🌸</div><div class="tagline">"A tradition unlike any other"</div></footer>
+    <script>
+        const CONFIG={googleSheetsUrl:'https://docs.google.com/spreadsheets/d/e/2PACX-1vScIiBoj3oRCQ2Yxm0poRFGgBQb5M3B_Y4aAzowgFoZNU8u-brvhjLEY9bUPLH1mC5dX7r4HqLEq2uD/pub?output=csv',refreshInterval:3600000,useGoogleSheets:true};const PLAYERS=['Becker','Murph','Higgins','Arguello'];let netScoreData={'Becker':0,'Murph':0,'Higgins':0,'Arguello':0};let wamsData={'Becker':0,'Murph':0,'Higgins':0,'Arguello':0};let girData={'Becker':0,'Murph':0};let best18Data={'Becker':{total:77,holes:[4,3,5,5,5,5,5,3,5,4,5,5,3,5,3,6,4,2]},'Murph':{total:80,holes:[5,4,4,3,6,4,5,6,3,6,6,4,5,4,4,3,3,5]}};let holeBattleData={'Becker':{totals:[4,3,5,5,5,5,3,5,4,5,5,3,5,3,6,4,2,5]},'Murph':{totals:[5,4,4,3,6,4,5,6,3,6,6,4,5,4,4,3,3,5]}};async function fetchFromGoogleSheets(){if(!CONFIG.useGoogleSheets)return false;try{const r=await fetch(CONFIG.googleSheetsUrl);const t=await r.text();Papa.parse(t,{complete:function(res){parseSpreadsheetData(res.data);renderAll();}});return true;}catch(e){return false;}}function parseSpreadsheetData(rows){let cs='';let sr=0;for(let i=0;i<rows.length;i++){const row=rows[i];if(!row||row.length===0)continue;const fc=(row[0]||'').toString().trim();const sc=(row[1]||'').toString().trim();if(fc==='$250'&&sc==='Net Score'){cs='netScore';continue;}if(fc==='$100'&&sc.includes('WAMs')){cs='wams';continue;}if(fc==='$100'&&sc==='GIR'){cs='gir';continue;}if(fc==='$250'&&sc==='Total'){cs='best18';sr=0;continue;}if(fc==='$50'){cs='holeBattle';sr=0;continue;}if(cs==='netScore'&&PLAYERS.includes(fc))netScoreData[fc]=parseFloat(sc)||0;if(cs==='wams'&&PLAYERS.includes(fc))wamsData[fc]=parseFloat(sc)||0;if(cs==='gir'&&['Becker','Murph'].includes(fc))girData[fc]=parseFloat(sc)||0;if(cs==='best18'){if(fc==='Becker')best18Data['Becker']={total:parseFloat(sc)||0,holes:row.slice(2,20).map(v=>parseInt(v)||0)};if(fc==='Murph')best18Data['Murph']={total:parseFloat(sc)||0,holes:row.slice(2,20).map(v=>parseInt(v)||0)};}if(cs==='holeBattle'&&fc==='Total:'&&sr<2){const totals=row.slice(1,19).map(v=>parseInt(v)||0);if(sr===0)holeBattleData['Becker']={totals};else holeBattleData['Murph']={totals};sr++;}}}function calculateHoleBattleResults(){let bw=0,mw=0,t=0;for(let i=0;i<18;i++){const b=holeBattleData['Becker'].totals[i];const m=holeBattleData['Murph'].totals[i];if(b<m)bw++;else if(m<b)mw++;else t++;}return{beckerWins:bw,murphWins:mw,ties:t};}function renderMoneySummary(){const c=document.getElementById('moneySummary');const b=calculateHoleBattleResults();c.innerHTML=PLAYERS.map(p=>{let n=0,bd='';if(p==='Becker'){n=(b.beckerWins-b.murphWins)*50;bd=b.beckerWins+' holes';}else if(p==='Murph'){n=(b.murphWins-b.beckerWins)*50;bd=b.murphWins+' holes';}else bd='No bets';return '<div class="money-card"><div class="player-name">'+p+'</div><div class="amount '+(n>0?'positive':n<0?'negative':'even')+'">'+(n>0?'+':'')+'$'+n+'</div><div class="breakdown">'+bd+'</div></div>';}).join('');}function renderMiniLeaderboard(eId,data,hib=true){const c=document.getElementById(eId);const e=Object.entries(data).map(([p,v])=>({player:p,value:typeof v==='object'?v.total:v}));e.sort((a,b)=>hib?b.value-a.value:a.value-b.value);c.innerHTML=e.map((x,i)=>{const rc=i===0?'first':i===1?'second':i===2?'third':'other';return '<div class="player-row"><div class="player-info"><span class="rank '+rc+'">'+(i+1)+'</span><span class="name">'+x.player+'</span></div><span class="value'+(i===0?' leading':'')+'">'+x.value+'</span></div>';}).join('');}function renderBest18(){const c=document.getElementById('best18Comparison');const h=document.getElementById('best18Holes');const bt=best18Data['Becker'].total;const mt=best18Data['Murph'].total;const d=Math.abs(bt-mt);const bl=bt<mt;c.innerHTML='<div class="best18-player"><div class="name">Becker</div><div class="total '+(bl?'leading':'trailing')+'">'+bt+'</div><div class="status '+(bl?'leader':'behind')+'">'+(bl?'🏆 LEADER':d+' back')+'</div></div><div class="best18-player"><div class="name">Murph</div><div class="total '+(!bl?'leading':'trailing')+'">'+mt+'</div><div class="status '+(!bl?'leader':'behind')+'">'+(!bl?'🏆 LEADER':d+' back')+'</div></div>';let hh='<div class="holes-label">Hole-by-Hole Best</div><div class="holes-wrapper"><div class="holes-grid" style="margin-bottom:3px;">';for(let i=1;i<=18;i++)hh+='<div class="hole-number">'+i+'</div>';hh+='</div><div style="display:flex;align-items:center;margin-bottom:5px;"><span style="width:45px;font-weight:600;font-size:0.7rem;">Becker</span><div class="holes-grid" style="flex:1;">';best18Data['Becker'].holes.forEach((s,i)=>{hh+='<div class="hole-score '+(s<best18Data['Murph'].holes[i]?'best':'')+'">'+s+'</div>';});hh+='</div></div><div style="display:flex;align-items:center;"><span style="width:45px;font-weight:600;font-size:0.7rem;">Murph</span><div class="holes-grid" style="flex:1;">';best18Data['Murph'].holes.forEach((s,i)=>{hh+='<div class="hole-score '+(s<best18Data['Becker'].holes[i]?'best':'')+'">'+s+'</div>';});hh+='</div></div></div>';h.innerHTML=hh;}function renderHoleBattle(){const sc=document.getElementById('battleSummary');const gc=document.getElementById('battleGrid');const b=calculateHoleBattleResults();const bn=(b.beckerWins-b.murphWins)*50;const mn=(b.murphWins-b.beckerWins)*50;sc.innerHTML='<div class="battle-player"><div class="name">Becker</div><div class="holes-won '+(b.beckerWins>b.murphWins?'leading':'trailing')+'">'+b.beckerWins+'</div><div class="money '+(bn>=0?'up':'down')+'">'+(bn>=0?'+':'')+'$'+bn+'</div></div><div class="battle-vs"><div style="font-size:0.75rem;color:#666;">holes</div><div>VS</div><div style="font-size:0.7rem;color:#999;">'+b.ties+' tied</div></div><div class="battle-player"><div class="name">Murph</div><div class="holes-won '+(b.murphWins>b.beckerWins?'leading':'trailing')+'">'+b.murphWins+'</div><div class="money '+(mn>=0?'up':'down')+'">'+(mn>=0?'+':'')+'$'+mn+'</div></div>';let g='<div class="battle-cell header" style="text-align:left;padding-left:5px;">Hole</div>';for(let i=1;i<=9;i++)g+='<div class="battle-cell header">'+i+'</div>';g+='<div class="battle-cell turn">OUT</div>';for(let i=10;i<=18;i++)g+='<div class="battle-cell header">'+i+'</div>';g+='<div class="battle-cell turn">IN</div>';g+='<div class="battle-cell player-label">Becker</div>';let bf=0,bb=0;for(let i=0;i<9;i++){const bv=holeBattleData['Becker'].totals[i];const mv=holeBattleData['Murph'].totals[i];bf+=bv;g+='<div class="battle-cell score '+(bv<mv?'winning':bv>mv?'losing':'tied')+'">'+bv+'</div>';}g+='<div class="battle-cell turn">'+bf+'</div>';for(let i=9;i<18;i++){const bv=holeBattleData['Becker'].totals[i];const mv=holeBattleData['Murph'].totals[i];bb+=bv;g+='<div class="battle-cell score '+(bv<mv?'winning':bv>mv?'losing':'tied')+'">'+bv+'</div>';}g+='<div class="battle-cell turn">'+bb+'</div>';g+='<div class="battle-cell player-label">Murph</div>';let mf=0,mb=0;for(let i=0;i<9;i++){const bv=holeBattleData['Becker'].totals[i];const mv=holeBattleData['Murph'].totals[i];mf+=mv;g+='<div class="battle-cell score '+(mv<bv?'winning':mv>bv?'losing':'tied')+'">'+mv+'</div>';}g+='<div class="battle-cell turn">'+mf+'</div>';for(let i=9;i<18;i++){const bv=holeBattleData['Becker'].totals[i];const mv=holeBattleData['Murph'].totals[i];mb+=mv;g+='<div class="battle-cell score '+(mv<bv?'winning':mv>bv?'losing':'tied')+'">'+mv+'</div>';}g+='<div class="battle-cell turn">'+mb+'</div>';gc.innerHTML=g;}function updateTimestamp(){document.getElementById('lastUpdated').textContent='Updated: '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})+' at '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});}function renderAll(){renderMoneySummary();renderMiniLeaderboard('netScoreLeaderboard',netScoreData);renderMiniLeaderboard('wamsLeaderboard',wamsData);renderMiniLeaderboard('girLeaderboard',girData);renderBest18();renderHoleBattle();updateTimestamp();}async function init(){if(CONFIG.useGoogleSheets){const s=await fetchFromGoogleSheets();if(!s)renderAll();}else renderAll();if(CONFIG.useGoogleSheets&&CONFIG.refreshInterval>0)setInterval(fetchFromGoogleSheets,CONFIG.refreshInterval);}document.addEventListener('DOMContentLoaded',init);
+    </script>
+</body>
+</html>
