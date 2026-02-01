@@ -974,19 +974,38 @@
                 ? netScoreEntries[0][0]
                 : null;
 
+            // Calculate WAMs & Snakes leader (highest total wins)
+            const wamsEntries = Object.entries(wamsData)
+                .filter(([player, score]) => PLAYERS.includes(player))
+                .sort((a, b) => b[1] - a[1]); // Sort descending (higher is better)
+
+            const wamsLeader = wamsEntries.length > 0 && wamsEntries[0][1] !== 0
+                ? wamsEntries[0][0]
+                : null;
+
+            // Calculate GIR leader (highest total wins - Becker vs Murph only)
+            const girLeader = (girData['Becker'] !== 0 || girData['Murph'] !== 0)
+                ? (girData['Becker'] > girData['Murph'] ? 'Becker' : (girData['Murph'] > girData['Becker'] ? 'Murph' : null))
+                : null;
+
+            // Calculate Best 18 Composite leader (lowest total wins - Becker vs Murph only)
+            const best18Leader = (best18Data['Becker'].total !== 0 || best18Data['Murph'].total !== 0)
+                ? (best18Data['Becker'].total < best18Data['Murph'].total ? 'Becker' : (best18Data['Murph'].total < best18Data['Becker'].total ? 'Murph' : null))
+                : null;
+
             const cards = PLAYERS.map(player => {
                 let net = 0;
                 let breakdownParts = [];
 
-                // Hole Battle (Becker vs Murph only)
+                // Hole Battle (Becker vs Murph only) - $50/hole
                 if (player === 'Becker') {
                     const holeBattleNet = (battle.beckerWins - battle.murphWins) * 50;
                     net += holeBattleNet;
-                    breakdownParts.push(`${battle.beckerWins} holes ($${Math.abs(holeBattleNet)})`);
+                    if (holeBattleNet !== 0) breakdownParts.push(`${battle.beckerWins} holes ($${Math.abs(holeBattleNet)})`);
                 } else if (player === 'Murph') {
                     const holeBattleNet = (battle.murphWins - battle.beckerWins) * 50;
                     net += holeBattleNet;
-                    breakdownParts.push(`${battle.murphWins} holes ($${Math.abs(holeBattleNet)})`);
+                    if (holeBattleNet !== 0) breakdownParts.push(`${battle.murphWins} holes ($${Math.abs(holeBattleNet)})`);
                 }
 
                 // Net Score ($250 bet - winner gets $750, others lose $250)
@@ -997,6 +1016,39 @@
                     } else {
                         net -= 250;
                         breakdownParts.push('Net Score (-$250)');
+                    }
+                }
+
+                // WAMs & Snakes ($100 bet - winner gets $300, others lose $100)
+                if (wamsLeader) {
+                    if (player === wamsLeader) {
+                        net += 300;
+                        breakdownParts.push('WAMs (+$300)');
+                    } else {
+                        net -= 100;
+                        breakdownParts.push('WAMs (-$100)');
+                    }
+                }
+
+                // GIR ($100 bet - Becker vs Murph only)
+                if (girLeader && (player === 'Becker' || player === 'Murph')) {
+                    if (player === girLeader) {
+                        net += 100;
+                        breakdownParts.push('GIR (+$100)');
+                    } else {
+                        net -= 100;
+                        breakdownParts.push('GIR (-$100)');
+                    }
+                }
+
+                // Best 18 Composite ($250 bet - Becker vs Murph only)
+                if (best18Leader && (player === 'Becker' || player === 'Murph')) {
+                    if (player === best18Leader) {
+                        net += 250;
+                        breakdownParts.push('Best 18 (+$250)');
+                    } else {
+                        net -= 250;
+                        breakdownParts.push('Best 18 (-$250)');
                     }
                 }
 
