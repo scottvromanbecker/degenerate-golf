@@ -965,19 +965,42 @@
             const container = document.getElementById('moneySummary');
             const battle = calculateHoleBattleResults();
 
+            // Calculate Net Score leader (lowest score wins)
+            const netScoreEntries = Object.entries(netScoreData)
+                .filter(([player, score]) => PLAYERS.includes(player))
+                .sort((a, b) => a[1] - b[1]); // Sort ascending (lower is better)
+
+            const netScoreLeader = netScoreEntries.length > 0 && netScoreEntries[0][1] !== 0
+                ? netScoreEntries[0][0]
+                : null;
+
             const cards = PLAYERS.map(player => {
                 let net = 0;
-                let breakdown = '';
+                let breakdownParts = [];
 
+                // Hole Battle (Becker vs Murph only)
                 if (player === 'Becker') {
-                    net = (battle.beckerWins - battle.murphWins) * 50;
-                    breakdown = `${battle.beckerWins} holes ($${battle.beckerWins * 50})`;
+                    const holeBattleNet = (battle.beckerWins - battle.murphWins) * 50;
+                    net += holeBattleNet;
+                    breakdownParts.push(`${battle.beckerWins} holes ($${Math.abs(holeBattleNet)})`);
                 } else if (player === 'Murph') {
-                    net = (battle.murphWins - battle.beckerWins) * 50;
-                    breakdown = `${battle.murphWins} holes ($${battle.murphWins * 50})`;
-                } else {
-                    breakdown = 'No active bets';
+                    const holeBattleNet = (battle.murphWins - battle.beckerWins) * 50;
+                    net += holeBattleNet;
+                    breakdownParts.push(`${battle.murphWins} holes ($${Math.abs(holeBattleNet)})`);
                 }
+
+                // Net Score ($250 bet - winner gets $750, others lose $250)
+                if (netScoreLeader) {
+                    if (player === netScoreLeader) {
+                        net += 750;
+                        breakdownParts.push('Net Score (+$750)');
+                    } else {
+                        net -= 250;
+                        breakdownParts.push('Net Score (-$250)');
+                    }
+                }
+
+                const breakdown = breakdownParts.length > 0 ? breakdownParts.join(', ') : 'No active bets';
 
                 return `
                     <div class="money-card">
@@ -1177,7 +1200,7 @@
         // Render all components
         function renderAll() {
             renderMoneySummary();
-            renderMiniLeaderboard('netScoreLeaderboard', netScoreData);
+            renderMiniLeaderboard('netScoreLeaderboard', netScoreData, false); // lower score is better
             renderMiniLeaderboard('wamsLeaderboard', wamsData);
             renderMiniLeaderboard('girLeaderboard', girData);
             renderBest18();
