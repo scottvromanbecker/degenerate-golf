@@ -643,12 +643,33 @@
                 font-size: 0.85rem;
             }
         }
+
+                .new-round-btn {
+                                display: inline-block;
+                                background: var(--masters-yellow);
+                                color: var(--masters-dark);
+                                padding: 12px 28px;
+                                border-radius: 25px;
+                                font-weight: 700;
+                                font-size: 1rem;
+                                margin-top: 15px;
+                                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                                text-decoration: none;
+                                transition: all 0.3s ease;
+                }
+                .new-round-btn:hover {
+                                background: #fff;
+                                transform: translateY(-2px);
+                                box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+                }
+        
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
             <h1>⛳ Degenerate Golf Games ⛳</h1>
+                        <a href="new-round.html" class="new-round-btn">Start a New Round</a>a>
             <div class="year-badge">2026 Season</div>
         </div>
     </header>
