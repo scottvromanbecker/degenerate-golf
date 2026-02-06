@@ -1163,6 +1163,9 @@
                     gameState.belAir.closedOut = true;
                     gameState.belAir.closedOutHole = holeNum;
                     gameState.belAir.currentBet = 30;
+                    // Reset new bet counters - fresh start
+                    gameState.belAir.newBetTeam1Holes = 0;
+                    gameState.belAir.newBetTeam2Holes = 0;
                 }
             }
 
@@ -1225,8 +1228,12 @@
             const holesRemaining = 18 - gameState.currentHole + 1;
 
             if (ba.closedOut) {
-                // Show new bet status only
+                // Show new bet status - this is a fresh bet starting from 0-0
                 const newDiff = ba.newBetTeam1Holes - ba.newBetTeam2Holes;
+                const holesPlayedInNewBet = ba.newBetTeam1Holes + ba.newBetTeam2Holes +
+                    gameState.holes.slice(ba.closedOutHole).filter(h => h.belAir === 'push').length;
+                const holesRemainingInNewBet = 18 - gameState.currentHole + 1;
+
                 if (newDiff > 0) {
                     document.getElementById('belAirScore').textContent =
                         `${gameState.teams.team1.join(' / ')} +${newDiff}`;
@@ -1237,9 +1244,9 @@
                     document.getElementById('belAirScore').textContent = 'Even';
                 }
                 document.getElementById('belAirMatchStatus').textContent =
-                    `New bet (closed out hole ${ba.closedOutHole})`;
+                    `New $30 bet (original closed hole ${ba.closedOutHole})`;
                 document.getElementById('belAirBetStatus').textContent =
-                    `$30/man • ${holesRemaining} holes left`;
+                    `New bet: ${ba.newBetTeam1Holes}-${ba.newBetTeam2Holes} • ${holesRemainingInNewBet} holes left`;
             } else {
                 const diff = ba.team1Holes - ba.team2Holes;
                 if (diff > 0) {
@@ -1330,12 +1337,16 @@
                     }
                 }
 
+                // Check for closeout (only if not already closed out)
                 if (!gameState.belAir.closedOut && i < 18) {
                     const holesRemaining = 18 - i;
                     const diff = Math.abs(gameState.belAir.team1Holes - gameState.belAir.team2Holes);
                     if (diff > holesRemaining) {
                         gameState.belAir.closedOut = true;
                         gameState.belAir.closedOutHole = i;
+                        // New bet starts fresh from 0-0
+                        gameState.belAir.newBetTeam1Holes = 0;
+                        gameState.belAir.newBetTeam2Holes = 0;
                     }
                 }
 
@@ -1425,51 +1436,56 @@
 
             // ===== BEL AIR =====
             const ba = gameState.belAir;
-            let belAirWinners, belAirLosers, belAirAmount;
 
             if (ba.closedOut) {
+                // ORIGINAL BET: The team that closed out wins $60/person
                 const origWinners = ba.team1Holes > ba.team2Holes ? gameState.teams.team1 : gameState.teams.team2;
                 const origLosers = ba.team1Holes > ba.team2Holes ? gameState.teams.team2 : gameState.teams.team1;
 
-                if (ba.newBetTeam1Holes !== ba.newBetTeam2Holes) {
-                    const newWinners = ba.newBetTeam1Holes > ba.newBetTeam2Holes ? gameState.teams.team1 : gameState.teams.team2;
+                // Pay out original $60 bet
+                origWinners.forEach(p => gameState.balances[p] += 60);
+                origLosers.forEach(p => gameState.balances[p] -= 60);
 
-                    if (newWinners[0] === origWinners[0]) {
-                        belAirWinners = origWinners;
-                        belAirLosers = origLosers;
-                        belAirAmount = 90;
-                    } else {
-                        belAirWinners = origWinners;
-                        belAirLosers = origLosers;
-                        belAirAmount = 30;
-                    }
+                // Store original bet result
+                gameState.belAirOriginalResult = { winners: origWinners, losers: origLosers, amount: 60 };
+
+                // NEW BET: Completely independent $30 bet for remaining holes
+                if (ba.newBetTeam1Holes > ba.newBetTeam2Holes) {
+                    // Team 1 wins the new bet
+                    gameState.teams.team1.forEach(p => gameState.balances[p] += 30);
+                    gameState.teams.team2.forEach(p => gameState.balances[p] -= 30);
+                    gameState.belAirNewResult = { winners: gameState.teams.team1, losers: gameState.teams.team2, amount: 30 };
+                } else if (ba.newBetTeam2Holes > ba.newBetTeam1Holes) {
+                    // Team 2 wins the new bet
+                    gameState.teams.team2.forEach(p => gameState.balances[p] += 30);
+                    gameState.teams.team1.forEach(p => gameState.balances[p] -= 30);
+                    gameState.belAirNewResult = { winners: gameState.teams.team2, losers: gameState.teams.team1, amount: 30 };
                 } else {
-                    belAirWinners = origWinners;
-                    belAirLosers = origLosers;
-                    belAirAmount = 60;
+                    // Push on new bet - no money changes hands
+                    gameState.belAirNewResult = { winners: null, losers: null, amount: 0 };
                 }
+
+                // Clear the old combined result
+                gameState.belAirResult = null;
             } else {
+                // No closeout - normal $60 bet
                 if (ba.team1Holes > ba.team2Holes) {
-                    belAirWinners = gameState.teams.team1;
-                    belAirLosers = gameState.teams.team2;
-                    belAirAmount = 60;
+                    gameState.teams.team1.forEach(p => gameState.balances[p] += 60);
+                    gameState.teams.team2.forEach(p => gameState.balances[p] -= 60);
+                    gameState.belAirResult = { winners: gameState.teams.team1, losers: gameState.teams.team2, amount: 60 };
                 } else if (ba.team2Holes > ba.team1Holes) {
-                    belAirWinners = gameState.teams.team2;
-                    belAirLosers = gameState.teams.team1;
-                    belAirAmount = 60;
+                    gameState.teams.team2.forEach(p => gameState.balances[p] += 60);
+                    gameState.teams.team1.forEach(p => gameState.balances[p] -= 60);
+                    gameState.belAirResult = { winners: gameState.teams.team2, losers: gameState.teams.team1, amount: 60 };
                 } else {
-                    belAirWinners = null;
-                    belAirLosers = null;
-                    belAirAmount = 0;
+                    // Push
+                    gameState.belAirResult = { winners: null, losers: null, amount: 0 };
                 }
-            }
 
-            if (belAirWinners) {
-                belAirWinners.forEach(p => gameState.balances[p] += belAirAmount);
-                belAirLosers.forEach(p => gameState.balances[p] -= belAirAmount);
+                // Clear closeout-specific results
+                gameState.belAirOriginalResult = null;
+                gameState.belAirNewResult = null;
             }
-
-            gameState.belAirResult = { winners: belAirWinners, losers: belAirLosers, amount: belAirAmount };
 
             // ===== SNAKE =====
             calculateSnakePayout(gameState.snake.frontHolders, gameState.snake.frontPot, 'front');
@@ -1551,21 +1567,43 @@
         // ==================== SUMMARY RENDER ====================
         function renderSummary() {
             const ba = gameState.belAir;
-            const baResult = gameState.belAirResult;
             let baSummary = `
                 <div style="padding: 15px; background: #fff; border-radius: 8px; margin: 10px 0;">
-                    <p><strong>Final Score:</strong> ${gameState.teams.team1.join(' & ')}: ${ba.team1Holes} holes | ${gameState.teams.team2.join(' & ')}: ${ba.team2Holes} holes</p>
             `;
 
             if (ba.closedOut) {
-                baSummary += `<p><strong>Closeout:</strong> Occurred on hole ${ba.closedOutHole}</p>`;
-                baSummary += `<p><strong>New Bet Score:</strong> ${ba.newBetTeam1Holes} - ${ba.newBetTeam2Holes}</p>`;
-            }
+                // Show both bets separately
+                baSummary += `
+                    <p><strong>Original $60 Bet:</strong> ${gameState.teams.team1.join(' & ')}: ${ba.team1Holes} holes | ${gameState.teams.team2.join(' & ')}: ${ba.team2Holes} holes</p>
+                    <p><strong>Closeout:</strong> Occurred on hole ${ba.closedOutHole}</p>
+                `;
 
-            if (baResult.winners) {
-                baSummary += `<p><strong>Winners:</strong> ${baResult.winners.join(' & ')} (+$${baResult.amount} each)</p>`;
+                const origResult = gameState.belAirOriginalResult;
+                if (origResult && origResult.winners) {
+                    baSummary += `<p><strong>Original Bet Winners:</strong> ${origResult.winners.join(' & ')} (+$${origResult.amount} each)</p>`;
+                }
+
+                baSummary += `<hr style="margin: 10px 0;">`;
+                baSummary += `<p><strong>New $30 Bet (holes ${ba.closedOutHole + 1}-18):</strong> ${gameState.teams.team1.join(' & ')}: ${ba.newBetTeam1Holes} holes | ${gameState.teams.team2.join(' & ')}: ${ba.newBetTeam2Holes} holes</p>`;
+
+                const newResult = gameState.belAirNewResult;
+                if (newResult && newResult.winners) {
+                    baSummary += `<p><strong>New Bet Winners:</strong> ${newResult.winners.join(' & ')} (+$${newResult.amount} each)</p>`;
+                } else if (newResult) {
+                    baSummary += `<p><strong>New Bet Result:</strong> Push - no money exchanged</p>`;
+                }
             } else {
-                baSummary += `<p><strong>Result:</strong> Push - no money exchanged</p>`;
+                // Normal single bet
+                baSummary += `
+                    <p><strong>Final Score:</strong> ${gameState.teams.team1.join(' & ')}: ${ba.team1Holes} holes | ${gameState.teams.team2.join(' & ')}: ${ba.team2Holes} holes</p>
+                `;
+
+                const result = gameState.belAirResult;
+                if (result && result.winners) {
+                    baSummary += `<p><strong>Winners:</strong> ${result.winners.join(' & ')} (+$${result.amount} each)</p>`;
+                } else {
+                    baSummary += `<p><strong>Result:</strong> Push - no money exchanged</p>`;
+                }
             }
 
             baSummary += '</div>';
@@ -1596,21 +1634,54 @@
             let payouts = '<div style="display: grid; gap: 15px;">';
 
             // Bel Air payout
-            if (baResult.winners) {
-                payouts += `
-                    <div style="padding: 15px; background: #fff; border-radius: 8px;">
-                        <strong>Bel Air</strong><br>
-                        Winners: ${baResult.winners.join(' & ')} (+$${baResult.amount} each)<br>
-                        Losers: ${baResult.losers.join(' & ')} (-$${baResult.amount} each)
-                    </div>
-                `;
+            if (ba.closedOut) {
+                // Show both bets
+                const origResult = gameState.belAirOriginalResult;
+                if (origResult && origResult.winners) {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>Bel Air - Original $60 Bet</strong><br>
+                            Winners: ${origResult.winners.join(' & ')} (+$${origResult.amount} each)<br>
+                            Losers: ${origResult.losers.join(' & ')} (-$${origResult.amount} each)
+                        </div>
+                    `;
+                }
+
+                const newResult = gameState.belAirNewResult;
+                if (newResult && newResult.winners) {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>Bel Air - New $30 Bet</strong><br>
+                            Winners: ${newResult.winners.join(' & ')} (+$${newResult.amount} each)<br>
+                            Losers: ${newResult.losers.join(' & ')} (-$${newResult.amount} each)
+                        </div>
+                    `;
+                } else if (newResult) {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>Bel Air - New $30 Bet</strong><br>
+                            Result: Push - no money exchanged
+                        </div>
+                    `;
+                }
             } else {
-                payouts += `
-                    <div style="padding: 15px; background: #fff; border-radius: 8px;">
-                        <strong>Bel Air</strong><br>
-                        Result: Push - no money exchanged
-                    </div>
-                `;
+                const result = gameState.belAirResult;
+                if (result && result.winners) {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>Bel Air</strong><br>
+                            Winners: ${result.winners.join(' & ')} (+$${result.amount} each)<br>
+                            Losers: ${result.losers.join(' & ')} (-$${result.amount} each)
+                        </div>
+                    `;
+                } else {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>Bel Air</strong><br>
+                            Result: Push - no money exchanged
+                        </div>
+                    `;
+                }
             }
 
             // Snake payouts
