@@ -12,20 +12,20 @@
             --masters-cream: #fdf6e3;
             --masters-light: #e8f5e9;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Georgia', serif;
             background: linear-gradient(135deg, var(--masters-dark) 0%, var(--masters-green) 100%);
             min-height: 100vh;
             color: #333;
         }
-        
+
         .header {
             background: var(--masters-dark);
             padding: 20px;
@@ -35,20 +35,20 @@
             top: 0;
             z-index: 100;
         }
-        
+
         .header h1 {
             color: var(--masters-yellow);
             font-size: 1.8rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .header-subtitle {
             color: #fff;
             font-size: 1rem;
             margin-top: 5px;
             opacity: 0.9;
         }
-        
+
         .main-container {
             display: flex;
             max-width: 1400px;
@@ -56,17 +56,17 @@
             padding: 20px;
             gap: 20px;
         }
-        
+
         .content-area {
             flex: 1;
             min-width: 0;
         }
-        
+
         .sidebar {
             width: 320px;
             flex-shrink: 0;
         }
-        
+
         .card {
             background: var(--masters-cream);
             border-radius: 15px;
@@ -74,7 +74,7 @@
             margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-        
+
         .card h2 {
             color: var(--masters-dark);
             margin-bottom: 20px;
@@ -82,27 +82,27 @@
             border-bottom: 2px solid var(--masters-yellow);
             padding-bottom: 10px;
         }
-        
+
         .card h3 {
             color: var(--masters-dark);
             margin: 15px 0 10px 0;
             font-size: 1.1rem;
         }
-        
+
         /* Team Selection Styles */
         .team-selection {
             text-align: center;
             max-width: 600px;
             margin: 40px auto;
         }
-        
+
         .player-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin: 20px 0;
         }
-        
+
         .player-slot {
             background: #fff;
             border: 3px solid var(--masters-green);
@@ -111,83 +111,83 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .player-slot:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
+
         .player-slot.selected {
             background: var(--masters-green);
             color: #fff;
         }
-        
+
         .player-slot.team1 {
             border-color: var(--masters-yellow);
             background: linear-gradient(135deg, #fff 0%, #fffde7 100%);
         }
-        
+
         .player-slot.team1.selected {
             background: var(--masters-yellow);
             color: var(--masters-dark);
         }
-        
+
         .player-slot.team2 {
             border-color: #2196F3;
             background: linear-gradient(135deg, #fff 0%, #e3f2fd 100%);
         }
-        
+
         .player-slot.team2.selected {
             background: #2196F3;
             color: #fff;
         }
-        
+
         .team-label {
             font-size: 0.8rem;
             font-weight: bold;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
-        
+
         .player-name {
             font-size: 1.2rem;
             font-weight: bold;
         }
-        
+
         .team-preview {
             margin: 30px 0;
             padding: 20px;
             background: #fff;
             border-radius: 10px;
         }
-        
+
         .team-preview h3 {
             margin-bottom: 15px;
         }
-        
+
         .team-display {
             display: flex;
             justify-content: space-around;
             gap: 20px;
         }
-        
+
         .team-box {
             flex: 1;
             padding: 15px;
             border-radius: 8px;
             text-align: center;
         }
-        
+
         .team-box.team1-box {
             background: linear-gradient(135deg, var(--masters-yellow) 0%, #f39c12 100%);
             color: var(--masters-dark);
         }
-        
+
         .team-box.team2-box {
             background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: #fff;
         }
-        
+
         /* Hole Tracking Styles */
         .hole-header {
             background: var(--masters-dark);
@@ -198,30 +198,30 @@
             font-size: 1.8rem;
             text-align: center;
         }
-        
+
         .question-group {
             margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
         }
-        
+
         .question-group:last-of-type {
             border-bottom: none;
         }
-        
+
         .question-label {
             font-weight: bold;
             color: var(--masters-dark);
             margin-bottom: 12px;
             font-size: 1.1rem;
         }
-        
+
         .btn-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
-        
+
         .btn {
             padding: 12px 24px;
             border: none;
@@ -232,60 +232,60 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        
+
         .btn-primary {
             background: var(--masters-green);
             color: #fff;
         }
-        
+
         .btn-primary:hover {
             background: var(--masters-dark);
             transform: translateY(-2px);
         }
-        
+
         .btn-yellow {
             background: var(--masters-yellow);
             color: var(--masters-dark);
         }
-        
+
         .btn-yellow:hover {
             background: #f39c12;
             transform: translateY(-2px);
         }
-        
+
         .btn-option {
             background: #fff;
             color: var(--masters-dark);
             border: 2px solid var(--masters-green);
         }
-        
+
         .btn-option:hover {
             background: var(--masters-light);
         }
-        
+
         .btn-option.selected {
             background: var(--masters-green);
             color: #fff;
         }
-        
+
         .btn-option.team1-btn.selected {
             background: var(--masters-yellow);
             color: var(--masters-dark);
             border-color: var(--masters-yellow);
         }
-        
+
         .btn-option.team2-btn.selected {
             background: #2196F3;
             color: #fff;
             border-color: #2196F3;
         }
-        
+
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
-        
+
         .checkbox-btn {
             padding: 10px 20px;
             background: #fff;
@@ -294,17 +294,17 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .checkbox-btn:hover {
             border-color: var(--masters-green);
         }
-        
+
         .checkbox-btn.checked {
             background: var(--masters-green);
             color: #fff;
             border-color: var(--masters-green);
         }
-        
+
         .wam-last-select {
             margin-top: 10px;
             padding: 10px;
@@ -312,14 +312,14 @@
             border-radius: 8px;
             border: 2px solid var(--masters-yellow);
         }
-        
+
         .wam-last-select label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
             color: var(--masters-dark);
         }
-        
+
         .wam-last-select select {
             width: 100%;
             padding: 10px;
@@ -327,7 +327,7 @@
             border: 1px solid #ccc;
             font-size: 1rem;
         }
-        
+
         .par3-section {
             margin-top: 15px;
             padding: 15px;
@@ -335,21 +335,21 @@
             border-radius: 8px;
             border: 2px solid var(--masters-green);
         }
-        
+
         .par3-section.hidden {
             display: none;
         }
-        
+
         /* Sidebar Styles */
         .sidebar .card {
             position: sticky;
             top: 100px;
         }
-        
+
         .tally-section {
             margin-bottom: 20px;
         }
-        
+
         .tally-title {
             font-weight: bold;
             color: var(--masters-dark);
@@ -359,32 +359,33 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .tally-value {
             background: #fff;
             padding: 8px 12px;
             border-radius: 5px;
             font-size: 0.9rem;
         }
-        
+
         .tally-pot {
             color: var(--masters-green);
             font-weight: bold;
         }
-        
+
         .bel-air-status {
             padding: 10px;
             background: #fff;
             border-radius: 8px;
             text-align: center;
         }
-        
+
         .bel-air-score {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             margin: 10px 0;
+            color: var(--masters-dark);
         }
-        
+
         .player-balance {
             display: flex;
             justify-content: space-between;
@@ -393,23 +394,23 @@
             border-radius: 5px;
             margin-bottom: 5px;
         }
-        
+
         .player-balance .name {
             font-weight: bold;
         }
-        
+
         .player-balance .amount {
             font-weight: bold;
         }
-        
+
         .player-balance .amount.positive {
             color: #27ae60;
         }
-        
+
         .player-balance .amount.negative {
             color: #e74c3c;
         }
-        
+
         /* Navigation */
         .nav-buttons {
             display: flex;
@@ -417,13 +418,13 @@
             margin-top: 25px;
             gap: 15px;
         }
-        
+
         .nav-buttons .btn {
             flex: 1;
             padding: 15px;
             font-size: 1.1rem;
         }
-        
+
         /* Summary Styles */
         .summary-table {
             width: 100%;
@@ -431,44 +432,44 @@
             margin: 15px 0;
             font-size: 0.9rem;
         }
-        
+
         .summary-table th,
         .summary-table td {
             padding: 10px;
             text-align: center;
             border: 1px solid #ddd;
         }
-        
+
         .summary-table th {
             background: var(--masters-dark);
             color: #fff;
         }
-        
+
         .summary-table tr:nth-child(even) {
             background: #f9f9f9;
         }
-        
+
         .summary-table .hole-9,
         .summary-table .hole-18 {
             background: var(--masters-yellow);
             font-weight: bold;
         }
-        
+
         .final-totals {
             margin-top: 30px;
         }
-        
+
         .final-totals h3 {
             text-align: center;
             margin-bottom: 20px;
         }
-        
+
         .totals-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
-        
+
         .total-card {
             background: #fff;
             padding: 20px;
@@ -476,25 +477,25 @@
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
+
         .total-card .player-name {
             font-size: 1.2rem;
             margin-bottom: 10px;
         }
-        
+
         .total-card .total-amount {
             font-size: 2rem;
             font-weight: bold;
         }
-        
+
         .total-card .total-amount.positive {
             color: #27ae60;
         }
-        
+
         .total-card .total-amount.negative {
             color: #e74c3c;
         }
-        
+
         .back-link {
             display: inline-block;
             margin-top: 20px;
@@ -505,50 +506,50 @@
             border-radius: 25px;
             transition: all 0.3s ease;
         }
-        
+
         .back-link:hover {
             background: #000;
             transform: translateY(-2px);
         }
-        
+
         /* View management */
         .view {
             display: none;
         }
-        
+
         .view.active {
             display: block;
         }
-        
+
         /* Responsive */
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
-            
+
             .sidebar {
                 width: 100%;
                 order: -1;
             }
-            
+
             .sidebar .card {
                 position: static;
             }
         }
-        
+
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 1.4rem;
             }
-            
+
             .team-display {
                 flex-direction: column;
             }
-            
+
             .btn-group {
                 flex-direction: column;
             }
-            
+
             .btn {
                 width: 100%;
             }
@@ -567,7 +568,7 @@
             <div class="card">
                 <h2>Select Teams for Today's Round</h2>
                 <p style="margin-bottom: 20px; color: #666;">Click players to pair them into teams. First two selected = Team 1 (Gold), next two = Team 2 (Blue).</p>
-                
+
                 <div class="player-grid" id="playerGrid">
                     <div class="player-slot" data-player="Becker" onclick="togglePlayer(this)">
                         <div class="team-label" id="label-Becker"></div>
@@ -586,7 +587,7 @@
                         <div class="player-name">Arguello</div>
                     </div>
                 </div>
-                
+
                 <div class="team-preview" id="teamPreview" style="display: none;">
                     <h3>Team Matchup</h3>
                     <div class="team-display">
@@ -601,12 +602,12 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <button class="btn btn-yellow" id="startRoundBtn" onclick="startRound()" style="display: none; width: 100%; padding: 18px; font-size: 1.2rem; margin-top: 20px;">
                     Start Round →
                 </button>
             </div>
-            
+
             <a href="index.html" class="back-link">← Back to Leaderboard</a>
         </div>
     </div>
@@ -617,7 +618,7 @@
             <div class="content-area">
                 <div class="card">
                     <div class="hole-header">Hole #<span id="currentHoleNum">1</span></div>
-                    
+
                     <!-- Question 1: Bel Air -->
                     <div class="question-group">
                         <div class="question-label">Who won the hole? (Bel Air)</div>
@@ -633,7 +634,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Question 2: Snake -->
                     <div class="question-group">
                         <div class="question-label">Who 3-putted? (Snake)</div>
@@ -641,7 +642,7 @@
                             <!-- Populated by JS -->
                         </div>
                     </div>
-                    
+
                     <!-- Question 3: WAM -->
                     <div class="question-group">
                         <div class="question-label">Who had a WAM?</div>
@@ -655,7 +656,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Question 4: CTP -->
                     <div class="question-group">
                         <div class="question-label">Closest to Pin?</div>
@@ -674,7 +675,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Navigation -->
                     <div class="nav-buttons">
                         <button class="btn btn-primary" id="prevHoleBtn" onclick="prevHole()" style="display: none;">
@@ -686,31 +687,31 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="card">
                     <h2>Running Tally</h2>
-                    
+
                     <!-- Bel Air Status -->
                     <div class="tally-section">
                         <div class="tally-title">Bel Air Match</div>
                         <div class="bel-air-status">
                             <div id="belAirMatchStatus">Match not started</div>
-                            <div class="bel-air-score" id="belAirScore">0 - 0</div>
+                            <div class="bel-air-score" id="belAirScore">Even</div>
                             <div id="belAirBetStatus" style="font-size: 0.85rem; color: #666;">$60/man bet active</div>
                         </div>
                     </div>
-                    
+
                     <!-- Snake Status -->
                     <div class="tally-section">
                         <div class="tally-title">
-                            Snake 
+                            Snake
                             <span class="tally-pot" id="snakePot">Pot: $10</span>
                         </div>
                         <div class="tally-value" id="snakeHolders">No one has the snake</div>
                     </div>
-                    
+
                     <!-- WAM Status -->
                     <div class="tally-section">
                         <div class="tally-title">
@@ -719,7 +720,7 @@
                         </div>
                         <div class="tally-value" id="wamHolder">No one has the WAM</div>
                     </div>
-                    
+
                     <!-- CTP Status -->
                     <div class="tally-section">
                         <div class="tally-title">
@@ -727,7 +728,7 @@
                             <span class="tally-pot" id="ctpRollover">$0</span>
                         </div>
                     </div>
-                    
+
                     <!-- Current Balances -->
                     <div class="tally-section">
                         <div class="tally-title">Current Balances</div>
@@ -746,11 +747,11 @@
             <div class="content-area">
                 <div class="card">
                     <h2>🏆 Round Summary</h2>
-                    
+
                     <!-- Bel Air Summary -->
                     <h3>Bel Air Match Progression</h3>
                     <div id="belAirSummary"></div>
-                    
+
                     <!-- Hole by Hole -->
                     <h3 style="margin-top: 30px;">Hole-by-Hole Results</h3>
                     <div style="overflow-x: auto;">
@@ -768,18 +769,18 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Game Payouts -->
                     <h3 style="margin-top: 30px;">Game Payouts</h3>
                     <div id="gamePayouts"></div>
-                    
+
                     <!-- Final Totals -->
                     <div class="final-totals">
                         <h3>💰 Final Standings</h3>
                         <div class="totals-grid" id="finalTotals">
                         </div>
                     </div>
-                    
+
                     <div style="text-align: center; margin-top: 30px;">
                         <a href="index.html" class="back-link">← Back to Leaderboard</a>
                         <button class="btn btn-yellow" onclick="resetRound()" style="margin-left: 15px;">Start New Round</button>
@@ -792,11 +793,11 @@
     <script>
         // ==================== GAME STATE ====================
         const PLAYERS = ['Becker', 'Murph', 'Higgins', 'Arguello'];
-        
+
         let gameState = {
             teams: { team1: [], team2: [] },
             currentHole: 1,
-            holes: [], // Array of hole data
+            holes: [],
             belAir: {
                 team1Holes: 0,
                 team2Holes: 0,
@@ -807,14 +808,14 @@
                 newBetTeam2Holes: 0
             },
             snake: {
-                frontPot: 10, // Starts at $10
+                frontPot: 10,
                 backPot: 0,
                 frontHolders: [],
                 backHolders: [],
-                currentHolders: [] // Who currently "has" the snake
+                currentHolders: []
             },
             wam: {
-                frontPot: 0, // Starts at $0
+                frontPot: 0,
                 backPot: 0,
                 frontHolder: null,
                 backHolder: null,
@@ -822,14 +823,13 @@
             },
             ctp: {
                 rollover: 0,
-                results: [] // {hole, winner, amount}
+                results: []
             },
             balances: {}
         };
-        
-        // Initialize balances
+
         PLAYERS.forEach(p => gameState.balances[p] = 0);
-        
+
         // ==================== LOCAL STORAGE ====================
         function saveState() {
             const saveData = {
@@ -838,45 +838,41 @@
             };
             localStorage.setItem('degenerateGolfRound', JSON.stringify(saveData));
         }
-        
+
         function loadState() {
             const saved = localStorage.getItem('degenerateGolfRound');
             if (saved) {
                 const data = JSON.parse(saved);
-                // Check if it's from today
                 if (data.savedDate === new Date().toDateString()) {
                     gameState = data;
                     return true;
                 } else {
-                    // Clear old data (midnight reset)
                     localStorage.removeItem('degenerateGolfRound');
                 }
             }
             return false;
         }
-        
+
         function resetRound() {
             localStorage.removeItem('degenerateGolfRound');
             location.reload();
         }
-        
+
         // ==================== TEAM SELECTION ====================
         let selectedPlayers = [];
-        
+
         function togglePlayer(element) {
             const player = element.dataset.player;
             const index = selectedPlayers.indexOf(player);
-            
+
             if (index > -1) {
-                // Deselect
                 selectedPlayers.splice(index, 1);
                 element.classList.remove('selected', 'team1', 'team2');
                 document.getElementById('label-' + player).textContent = '';
             } else if (selectedPlayers.length < 4) {
-                // Select
                 selectedPlayers.push(player);
                 element.classList.add('selected');
-                
+
                 if (selectedPlayers.length <= 2) {
                     element.classList.add('team1');
                     document.getElementById('label-' + player).textContent = 'Team 1';
@@ -885,37 +881,36 @@
                     document.getElementById('label-' + player).textContent = 'Team 2';
                 }
             }
-            
+
             updateTeamPreview();
         }
-        
+
         function updateTeamPreview() {
             const preview = document.getElementById('teamPreview');
             const startBtn = document.getElementById('startRoundBtn');
-            
+
             if (selectedPlayers.length === 4) {
                 preview.style.display = 'block';
                 startBtn.style.display = 'block';
-                
-                document.getElementById('team1Display').textContent = 
+
+                document.getElementById('team1Display').textContent =
                     selectedPlayers.slice(0, 2).join(' & ');
-                document.getElementById('team2Display').textContent = 
+                document.getElementById('team2Display').textContent =
                     selectedPlayers.slice(2, 4).join(' & ');
             } else {
                 preview.style.display = 'none';
                 startBtn.style.display = 'none';
             }
         }
-        
+
         function startRound() {
             gameState.teams.team1 = selectedPlayers.slice(0, 2);
             gameState.teams.team2 = selectedPlayers.slice(2, 4);
-            
-            // Initialize hole data
+
             for (let i = 1; i <= 18; i++) {
                 gameState.holes.push({
                     hole: i,
-                    belAir: null, // 'team1', 'team2', or 'push'
+                    belAir: null,
                     threePutts: [],
                     wams: [],
                     wamLast: null,
@@ -923,81 +918,74 @@
                     ctpWinner: null
                 });
             }
-            
-            // Initialize snake pot for hole 1
+
             gameState.snake.frontPot = 10;
-            
+
             saveState();
             showHoleTracking();
         }
-        
+
         // ==================== VIEW MANAGEMENT ====================
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
         }
-        
+
         function showHoleTracking() {
             showView('holeTrackingView');
             document.getElementById('headerSubtitle').textContent = 'Round in Progress';
             populateHoleUI();
             updateSidebar();
         }
-        
+
         function showSummary() {
             showView('summaryView');
             document.getElementById('headerSubtitle').textContent = 'Round Complete';
             calculateFinalPayouts();
             renderSummary();
         }
-        
+
         // ==================== HOLE TRACKING UI ====================
         function populateHoleUI() {
             const hole = gameState.currentHole;
             const holeData = gameState.holes[hole - 1];
-            
+
             document.getElementById('currentHoleNum').textContent = hole;
-            
-            // Update team names in Bel Air buttons
-            document.getElementById('belAirTeam1Name').textContent = 
-                gameState.teams.team1.join(' & ');
-            document.getElementById('belAirTeam2Name').textContent = 
-                gameState.teams.team2.join(' & ');
-            
-            // Populate Snake checkboxes
+
+            document.getElementById('belAirTeam1Name').textContent =
+                gameState.teams.team1.join(' / ');
+            document.getElementById('belAirTeam2Name').textContent =
+                gameState.teams.team2.join(' / ');
+
             const snakeDiv = document.getElementById('snakeCheckboxes');
             snakeDiv.innerHTML = PLAYERS.map(p => `
-                <div class="checkbox-btn ${holeData.threePutts.includes(p) ? 'checked' : ''}" 
+                <div class="checkbox-btn ${holeData.threePutts.includes(p) ? 'checked' : ''}"
                      data-player="${p}" onclick="toggleSnake(this)">
                     ${p}
                 </div>
             `).join('');
-            
-            // Populate WAM checkboxes
+
             const wamDiv = document.getElementById('wamCheckboxes');
             wamDiv.innerHTML = PLAYERS.map(p => `
-                <div class="checkbox-btn ${holeData.wams.includes(p) ? 'checked' : ''}" 
+                <div class="checkbox-btn ${holeData.wams.includes(p) ? 'checked' : ''}"
                      data-player="${p}" onclick="toggleWam(this)">
                     ${p}
                 </div>
             `).join('');
             updateWamLastDropdown();
-            
-            // Populate CTP buttons
+
             const ctpDiv = document.getElementById('ctpBtns');
             ctpDiv.innerHTML = PLAYERS.map(p => `
-                <button class="btn btn-option ${holeData.ctpWinner === p ? 'selected' : ''}" 
+                <button class="btn btn-option ${holeData.ctpWinner === p ? 'selected' : ''}"
                         data-value="${p}" onclick="selectCTP(this)">
                     ${p}
                 </button>
             `).join('');
-            
-            // Restore Bel Air selection
+
             document.querySelectorAll('#belAirBtns .btn-option').forEach(btn => {
                 btn.classList.toggle('selected', btn.dataset.value === holeData.belAir);
             });
-            
-            // Restore Par 3 state
+
             const par3Btn = document.getElementById('par3Btn');
             const par3Section = document.getElementById('par3Section');
             if (holeData.isPar3) {
@@ -1007,31 +995,30 @@
                 par3Btn.classList.remove('selected');
                 par3Section.classList.add('hidden');
             }
-            
-            // CTP none selection
+
             document.querySelectorAll('#par3Section .btn-option[data-value="none"]').forEach(btn => {
                 btn.classList.toggle('selected', holeData.isPar3 && holeData.ctpWinner === null);
             });
-            
-            // Navigation buttons
+
             document.getElementById('prevHoleBtn').style.display = hole > 1 ? 'block' : 'none';
-            document.getElementById('nextHoleBtn').textContent = 
+            document.getElementById('nextHoleBtn').textContent =
                 hole === 18 ? 'Finish Round →' : 'Next Hole →';
         }
-        
+
         // ==================== HOLE TRACKING ACTIONS ====================
         function selectBelAir(btn) {
             document.querySelectorAll('#belAirBtns .btn-option').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             gameState.holes[gameState.currentHole - 1].belAir = btn.dataset.value;
             saveState();
+            updateSidebar();
         }
-        
+
         function toggleSnake(element) {
             const player = element.dataset.player;
             const holeData = gameState.holes[gameState.currentHole - 1];
             const index = holeData.threePutts.indexOf(player);
-            
+
             if (index > -1) {
                 holeData.threePutts.splice(index, 1);
                 element.classList.remove('checked');
@@ -1039,16 +1026,16 @@
                 holeData.threePutts.push(player);
                 element.classList.add('checked');
             }
-            
+
             saveState();
             updateSidebar();
         }
-        
+
         function toggleWam(element) {
             const player = element.dataset.player;
             const holeData = gameState.holes[gameState.currentHole - 1];
             const index = holeData.wams.indexOf(player);
-            
+
             if (index > -1) {
                 holeData.wams.splice(index, 1);
                 element.classList.remove('checked');
@@ -1056,17 +1043,17 @@
                 holeData.wams.push(player);
                 element.classList.add('checked');
             }
-            
+
             updateWamLastDropdown();
             saveState();
             updateSidebar();
         }
-        
+
         function updateWamLastDropdown() {
             const holeData = gameState.holes[gameState.currentHole - 1];
             const select = document.getElementById('wamLastPlayer');
             const container = document.getElementById('wamLastSelect');
-            
+
             if (holeData.wams.length > 1) {
                 container.style.display = 'block';
                 select.innerHTML = '<option value="">-- Select --</option>' +
@@ -1079,65 +1066,65 @@
                 holeData.wamLast = null;
             }
         }
-        
+
         function updateWamLast() {
             const holeData = gameState.holes[gameState.currentHole - 1];
             holeData.wamLast = document.getElementById('wamLastPlayer').value || null;
             saveState();
             updateSidebar();
         }
-        
+
         function togglePar3() {
             const btn = document.getElementById('par3Btn');
             const section = document.getElementById('par3Section');
             const holeData = gameState.holes[gameState.currentHole - 1];
-            
+
             holeData.isPar3 = !holeData.isPar3;
             btn.classList.toggle('selected', holeData.isPar3);
             section.classList.toggle('hidden', !holeData.isPar3);
-            
+
             if (!holeData.isPar3) {
                 holeData.ctpWinner = null;
             }
-            
+
             saveState();
+            updateSidebar();
         }
-        
+
         function selectCTP(btn) {
             const holeData = gameState.holes[gameState.currentHole - 1];
             const value = btn.dataset.value;
-            
+
             document.querySelectorAll('#par3Section .btn-option').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            
+
             holeData.ctpWinner = value === 'none' ? null : value;
             saveState();
+            updateSidebar();
         }
-        
+
         // ==================== NAVIGATION ====================
         function nextHole() {
-            // Process current hole
             processHole(gameState.currentHole);
-            
+
             if (gameState.currentHole === 18) {
                 showSummary();
             } else {
                 gameState.currentHole++;
-                
-                // Add $10 to snake pot at hole 10
+
                 if (gameState.currentHole === 10) {
                     gameState.snake.backPot = 10;
                     gameState.snake.currentHolders = [];
                     gameState.wam.currentHolder = null;
                 }
-                
+
                 saveState();
                 populateHoleUI();
                 updateSidebar();
                 window.scrollTo(0, 0);
             }
         }
-        
+
         function prevHole() {
             if (gameState.currentHole > 1) {
                 gameState.currentHole--;
@@ -1147,12 +1134,12 @@
                 window.scrollTo(0, 0);
             }
         }
-        
+
         // ==================== GAME LOGIC ====================
         function processHole(holeNum) {
             const holeData = gameState.holes[holeNum - 1];
             const isBack9 = holeNum > 9;
-            
+
             // Process Bel Air
             if (holeData.belAir === 'team1') {
                 if (gameState.belAir.closedOut) {
@@ -1167,7 +1154,7 @@
                     gameState.belAir.team2Holes++;
                 }
             }
-            
+
             // Check for closeout
             if (!gameState.belAir.closedOut) {
                 const holesRemaining = 18 - holeNum;
@@ -1178,24 +1165,22 @@
                     gameState.belAir.currentBet = 30;
                 }
             }
-            
+
             // Process Snake
             holeData.threePutts.forEach(player => {
                 if (!gameState.snake.currentHolders.includes(player)) {
                     gameState.snake.currentHolders.push(player);
                 }
-                // Add $10 to pot
                 if (isBack9) {
                     gameState.snake.backPot += 10;
                 } else {
                     gameState.snake.frontPot += 10;
                 }
             });
-            
+
             // Process WAM
             if (holeData.wamLast) {
                 gameState.wam.currentHolder = holeData.wamLast;
-                // Add $15 to pot for each WAM
                 const wamAmount = holeData.wams.length * 15;
                 if (isBack9) {
                     gameState.wam.backPot += wamAmount;
@@ -1203,7 +1188,7 @@
                     gameState.wam.frontPot += wamAmount;
                 }
             }
-            
+
             // Store snake/wam holders at end of 9/18
             if (holeNum === 9) {
                 gameState.snake.frontHolders = [...gameState.snake.currentHolders];
@@ -1212,7 +1197,7 @@
                 gameState.snake.backHolders = [...gameState.snake.currentHolders];
                 gameState.wam.backHolder = gameState.wam.currentHolder;
             }
-            
+
             // Process CTP
             if (holeData.isPar3) {
                 if (holeData.ctpWinner) {
@@ -1227,59 +1212,72 @@
                     gameState.ctp.rollover += 15;
                 }
             }
-            
+
             saveState();
         }
-        
+
         // ==================== SIDEBAR UPDATE ====================
         function updateSidebar() {
-            // Recalculate state up to current hole
             recalculateState();
-            
-            // Bel Air
+
+            // Bel Air - Show team ahead and margin
             const ba = gameState.belAir;
-            document.getElementById('belAirScore').textContent = 
-                `${ba.team1Holes} - ${ba.team2Holes}`;
-            
+            const holesRemaining = 18 - gameState.currentHole + 1;
+
             if (ba.closedOut) {
-                const winner = ba.team1Holes > ba.team2Holes ? 
-                    gameState.teams.team1.join(' & ') : 
-                    gameState.teams.team2.join(' & ');
-                document.getElementById('belAirMatchStatus').textContent = 
-                    `Closed out on hole ${ba.closedOutHole}`;
-                document.getElementById('belAirBetStatus').textContent = 
-                    `$30/man new bet (${ba.newBetTeam1Holes} - ${ba.newBetTeam2Holes})`;
+                // Show new bet status only
+                const newDiff = ba.newBetTeam1Holes - ba.newBetTeam2Holes;
+                if (newDiff > 0) {
+                    document.getElementById('belAirScore').textContent =
+                        `${gameState.teams.team1.join(' / ')} +${newDiff}`;
+                } else if (newDiff < 0) {
+                    document.getElementById('belAirScore').textContent =
+                        `${gameState.teams.team2.join(' / ')} +${Math.abs(newDiff)}`;
+                } else {
+                    document.getElementById('belAirScore').textContent = 'Even';
+                }
+                document.getElementById('belAirMatchStatus').textContent =
+                    `New bet (closed out hole ${ba.closedOutHole})`;
+                document.getElementById('belAirBetStatus').textContent =
+                    `$30/man • ${holesRemaining} holes left`;
             } else {
-                const holesRemaining = 18 - gameState.currentHole + 1;
-                document.getElementById('belAirMatchStatus').textContent = 
-                    `${holesRemaining} holes remaining`;
+                const diff = ba.team1Holes - ba.team2Holes;
+                if (diff > 0) {
+                    document.getElementById('belAirScore').textContent =
+                        `${gameState.teams.team1.join(' / ')} +${diff}`;
+                } else if (diff < 0) {
+                    document.getElementById('belAirScore').textContent =
+                        `${gameState.teams.team2.join(' / ')} +${Math.abs(diff)}`;
+                } else {
+                    document.getElementById('belAirScore').textContent = 'Even';
+                }
+                document.getElementById('belAirMatchStatus').textContent = `${holesRemaining} holes remaining`;
                 document.getElementById('belAirBetStatus').textContent = '$60/man bet active';
             }
-            
+
             // Snake
             const isBack9 = gameState.currentHole > 9;
             const snakePot = isBack9 ? gameState.snake.backPot : gameState.snake.frontPot;
             document.getElementById('snakePot').textContent = `Pot: $${snakePot}`;
-            
+
             const snakeHolders = gameState.snake.currentHolders;
-            document.getElementById('snakeHolders').textContent = 
+            document.getElementById('snakeHolders').textContent =
                 snakeHolders.length > 0 ? snakeHolders.join(', ') + ' has the snake' : 'No one has the snake';
-            
+
             // WAM
             const wamPot = isBack9 ? gameState.wam.backPot : gameState.wam.frontPot;
             document.getElementById('wamPot').textContent = `Pot: $${wamPot}`;
-            document.getElementById('wamHolder').textContent = 
+            document.getElementById('wamHolder').textContent =
                 gameState.wam.currentHolder ? `${gameState.wam.currentHolder} has the WAM` : 'No one has the WAM';
-            
+
             // CTP Rollover
             document.getElementById('ctpRollover').textContent = `$${gameState.ctp.rollover}`;
-            
-            // Current Balances (simplified preview)
-            updateBalancesPreview();
+
+            // Update running balances
+            updateRunningBalances();
         }
-        
+
         function recalculateState() {
-            // Reset calculations
             gameState.belAir = {
                 team1Holes: 0,
                 team2Holes: 0,
@@ -1305,19 +1303,18 @@
             };
             gameState.ctp.rollover = 0;
             gameState.ctp.results = [];
-            
-            // Replay all holes up to current
+
             for (let i = 1; i <= gameState.currentHole; i++) {
                 const holeData = gameState.holes[i - 1];
+                if (!holeData) continue;
                 const isBack9 = i > 9;
-                
-                // Reset at hole 10
+
                 if (i === 10) {
                     gameState.snake.backPot = 10;
                     gameState.snake.currentHolders = [];
                     gameState.wam.currentHolder = null;
                 }
-                
+
                 // Bel Air
                 if (holeData.belAir === 'team1') {
                     if (gameState.belAir.closedOut) {
@@ -1332,8 +1329,7 @@
                         gameState.belAir.team2Holes++;
                     }
                 }
-                
-                // Check closeout
+
                 if (!gameState.belAir.closedOut && i < 18) {
                     const holesRemaining = 18 - i;
                     const diff = Math.abs(gameState.belAir.team1Holes - gameState.belAir.team2Holes);
@@ -1342,7 +1338,7 @@
                         gameState.belAir.closedOutHole = i;
                     }
                 }
-                
+
                 // Snake
                 holeData.threePutts.forEach(player => {
                     if (!gameState.snake.currentHolders.includes(player)) {
@@ -1354,11 +1350,11 @@
                         gameState.snake.frontPot += 10;
                     }
                 });
-                
+
                 if (i === 9) {
                     gameState.snake.frontHolders = [...gameState.snake.currentHolders];
                 }
-                
+
                 // WAM
                 if (holeData.wamLast) {
                     gameState.wam.currentHolder = holeData.wamLast;
@@ -1370,11 +1366,11 @@
                         gameState.wam.frontPot += 15;
                     }
                 });
-                
+
                 if (i === 9) {
                     gameState.wam.frontHolder = gameState.wam.currentHolder;
                 }
-                
+
                 // CTP
                 if (holeData.isPar3) {
                     if (holeData.ctpWinner) {
@@ -1391,60 +1387,68 @@
                 }
             }
         }
-        
-        function updateBalancesPreview() {
+
+        function updateRunningBalances() {
+            // Calculate current balances based on completed CTP results
+            const runningBalances = {};
+            PLAYERS.forEach(p => runningBalances[p] = 0);
+
+            // Add CTP results (these are finalized as they happen)
+            gameState.ctp.results.forEach(ctp => {
+                runningBalances[ctp.winner] += ctp.amount;
+                const losers = PLAYERS.filter(p => p !== ctp.winner);
+                losers.forEach(p => runningBalances[p] -= ctp.amount / 3);
+            });
+
             const balDiv = document.getElementById('currentBalances');
-            // Just show placeholder for now - full calculation at end
-            balDiv.innerHTML = PLAYERS.map(p => `
-                <div class="player-balance">
-                    <span class="name">${p}</span>
-                    <span class="amount">--</span>
-                </div>
-            `).join('');
+            balDiv.innerHTML = PLAYERS.map(p => {
+                const amount = runningBalances[p];
+                const amountClass = amount > 0 ? 'positive' : amount < 0 ? 'negative' : '';
+                const sign = amount > 0 ? '+' : '';
+                const displayAmount = amount === 0 ? '$0' : `${sign}$${amount.toFixed(2)}`;
+                return `
+                    <div class="player-balance">
+                        <span class="name">${p}</span>
+                        <span class="amount ${amountClass}">${displayAmount}</span>
+                    </div>
+                `;
+            }).join('');
         }
-        
+
         // ==================== FINAL PAYOUTS ====================
         function calculateFinalPayouts() {
-            // Reset balances
             PLAYERS.forEach(p => gameState.balances[p] = 0);
-            
-            // Recalculate full state
+
             recalculateState();
             gameState.snake.backHolders = [...gameState.snake.currentHolders];
             gameState.wam.backHolder = gameState.wam.currentHolder;
-            
+
             // ===== BEL AIR =====
             const ba = gameState.belAir;
             let belAirWinners, belAirLosers, belAirAmount;
-            
+
             if (ba.closedOut) {
-                // Original bet winner
                 const origWinners = ba.team1Holes > ba.team2Holes ? gameState.teams.team1 : gameState.teams.team2;
                 const origLosers = ba.team1Holes > ba.team2Holes ? gameState.teams.team2 : gameState.teams.team1;
-                
-                // Check new bet
+
                 if (ba.newBetTeam1Holes !== ba.newBetTeam2Holes) {
                     const newWinners = ba.newBetTeam1Holes > ba.newBetTeam2Holes ? gameState.teams.team1 : gameState.teams.team2;
-                    
+
                     if (newWinners[0] === origWinners[0]) {
-                        // Same team won both - $90
                         belAirWinners = origWinners;
                         belAirLosers = origLosers;
                         belAirAmount = 90;
                     } else {
-                        // Different teams won - original winners get $30
                         belAirWinners = origWinners;
                         belAirLosers = origLosers;
                         belAirAmount = 30;
                     }
                 } else {
-                    // New bet pushed - original winners get $60
                     belAirWinners = origWinners;
                     belAirLosers = origLosers;
                     belAirAmount = 60;
                 }
             } else {
-                // No closeout - compare holes
                 if (ba.team1Holes > ba.team2Holes) {
                     belAirWinners = gameState.teams.team1;
                     belAirLosers = gameState.teams.team2;
@@ -1459,122 +1463,124 @@
                     belAirAmount = 0;
                 }
             }
-            
+
             if (belAirWinners) {
                 belAirWinners.forEach(p => gameState.balances[p] += belAirAmount);
                 belAirLosers.forEach(p => gameState.balances[p] -= belAirAmount);
             }
-            
+
             gameState.belAirResult = { winners: belAirWinners, losers: belAirLosers, amount: belAirAmount };
-            
+
             // ===== SNAKE =====
-            // Front 9
             calculateSnakePayout(gameState.snake.frontHolders, gameState.snake.frontPot, 'front');
-            // Back 9
             calculateSnakePayout(gameState.snake.backHolders, gameState.snake.backPot, 'back');
-            
+
             // ===== WAM =====
-            // Front 9
             calculateWamPayout(gameState.wam.frontHolder, gameState.wam.frontPot, gameState.snake.frontHolders, 'front');
-            // Back 9
             calculateWamPayout(gameState.wam.backHolder, gameState.wam.backPot, gameState.snake.backHolders, 'back');
-            
+
             // ===== CTP =====
             gameState.ctp.results.forEach(ctp => {
                 gameState.balances[ctp.winner] += ctp.amount;
                 const losers = PLAYERS.filter(p => p !== ctp.winner);
                 losers.forEach(p => gameState.balances[p] -= ctp.amount / 3);
             });
-            
+
             saveState();
         }
-        
+
         function calculateSnakePayout(holders, pot, nine) {
             if (holders.length === 0) {
-                // No one had the snake - pot stays (or splits evenly?)
-                // Based on rules, someone must have snake to lose
                 return;
             }
-            
+
             const nonHolders = PLAYERS.filter(p => !holders.includes(p));
-            
+
             if (nonHolders.length === 0) {
-                // Everyone had the snake - no payout
                 return;
             }
-            
+
             // Snake holders lose, non-holders split the pot
             const winPerPerson = pot / nonHolders.length;
             const lossPerPerson = pot / holders.length;
-            
+
             nonHolders.forEach(p => gameState.balances[p] += winPerPerson);
             holders.forEach(p => gameState.balances[p] -= lossPerPerson);
-            
+
             gameState[`snake${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
                 holders, nonHolders, pot, winPerPerson, lossPerPerson
             };
         }
-        
+
         function calculateWamPayout(holder, pot, snakeHolders, nine) {
             if (!holder || pot === 0) return;
-            
-            // WAM winner gets pot
-            // Non-snake-winners pay 1/3 of pot each
-            // This means snake losers pay the WAM winner
-            
-            const snakeLosers = snakeHolders.length > 0 ? snakeHolders : [];
-            const payers = snakeLosers.length > 0 ? snakeLosers : PLAYERS.filter(p => p !== holder);
-            
-            if (payers.length === 0) return;
-            
-            const payPerPerson = pot / payers.length;
-            
-            gameState.balances[holder] += pot;
+
+            // Determine payers: snake losers who are NOT the WAM winner
+            // If no snake losers, other 3 players pay
+            let payers;
+            if (snakeHolders.length > 0) {
+                payers = snakeHolders.filter(p => p !== holder);
+            } else {
+                payers = PLAYERS.filter(p => p !== holder);
+            }
+
+            if (payers.length === 0) {
+                // WAM winner is the only snake loser - no one pays them
+                gameState[`wam${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
+                    holder, pot, payers: [], payPerPerson: 0, totalReceived: 0
+                };
+                return;
+            }
+
+            // Each payer pays 1/3 of the pot
+            const payPerPerson = pot / 3;
+            let totalReceived = 0;
+
             payers.forEach(p => {
-                if (p !== holder) {
-                    gameState.balances[p] -= payPerPerson;
-                }
+                gameState.balances[p] -= payPerPerson;
+                totalReceived += payPerPerson;
             });
-            
+
+            gameState.balances[holder] += totalReceived;
+
             gameState[`wam${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
-                holder, pot, payers, payPerPerson
+                holder, pot, payers, payPerPerson, totalReceived
             };
         }
-        
+
         // ==================== SUMMARY RENDER ====================
         function renderSummary() {
-            // Bel Air Summary
             const ba = gameState.belAir;
             const baResult = gameState.belAirResult;
             let baSummary = `
                 <div style="padding: 15px; background: #fff; border-radius: 8px; margin: 10px 0;">
                     <p><strong>Final Score:</strong> ${gameState.teams.team1.join(' & ')}: ${ba.team1Holes} holes | ${gameState.teams.team2.join(' & ')}: ${ba.team2Holes} holes</p>
             `;
-            
+
             if (ba.closedOut) {
                 baSummary += `<p><strong>Closeout:</strong> Occurred on hole ${ba.closedOutHole}</p>`;
                 baSummary += `<p><strong>New Bet Score:</strong> ${ba.newBetTeam1Holes} - ${ba.newBetTeam2Holes}</p>`;
             }
-            
+
             if (baResult.winners) {
                 baSummary += `<p><strong>Winners:</strong> ${baResult.winners.join(' & ')} (+$${baResult.amount} each)</p>`;
             } else {
                 baSummary += `<p><strong>Result:</strong> Push - no money exchanged</p>`;
             }
-            
+
             baSummary += '</div>';
             document.getElementById('belAirSummary').innerHTML = baSummary;
-            
+
             // Hole Summary Table
             const tbody = document.getElementById('holeSummaryBody');
             tbody.innerHTML = gameState.holes.map((h, i) => {
                 const holeNum = i + 1;
                 const rowClass = (holeNum === 9 || holeNum === 18) ? 'hole-9' : '';
-                
+
                 let belAirText = h.belAir === 'team1' ? gameState.teams.team1.join('/') :
                                  h.belAir === 'team2' ? gameState.teams.team2.join('/') :
                                  h.belAir === 'push' ? 'Push' : '-';
-                
+
                 return `
                     <tr class="${rowClass}">
                         <td>${holeNum}</td>
@@ -1585,10 +1591,28 @@
                     </tr>
                 `;
             }).join('');
-            
+
             // Game Payouts
             let payouts = '<div style="display: grid; gap: 15px;">';
-            
+
+            // Bel Air payout
+            if (baResult.winners) {
+                payouts += `
+                    <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                        <strong>Bel Air</strong><br>
+                        Winners: ${baResult.winners.join(' & ')} (+$${baResult.amount} each)<br>
+                        Losers: ${baResult.losers.join(' & ')} (-$${baResult.amount} each)
+                    </div>
+                `;
+            } else {
+                payouts += `
+                    <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                        <strong>Bel Air</strong><br>
+                        Result: Push - no money exchanged
+                    </div>
+                `;
+            }
+
             // Snake payouts
             ['Front', 'Back'].forEach(nine => {
                 const result = gameState[`snake${nine}Result`];
@@ -1602,36 +1626,43 @@
                     `;
                 }
             });
-            
+
             // WAM payouts
             ['Front', 'Back'].forEach(nine => {
                 const result = gameState[`wam${nine}Result`];
-                if (result && result.holder) {
+                if (result && result.holder && result.totalReceived > 0) {
                     payouts += `
                         <div style="padding: 15px; background: #fff; border-radius: 8px;">
                             <strong>WAM (${nine} 9) - Pot: $${result.pot}</strong><br>
-                            Winner: ${result.holder} (+$${result.pot})<br>
+                            Winner: ${result.holder} (+$${result.totalReceived.toFixed(2)})<br>
                             Payers: ${result.payers.join(', ')} (-$${result.payPerPerson.toFixed(2)} each)
+                        </div>
+                    `;
+                } else if (result && result.holder && result.totalReceived === 0) {
+                    payouts += `
+                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
+                            <strong>WAM (${nine} 9) - Pot: $${result.pot}</strong><br>
+                            ${result.holder} had the WAM but was sole snake loser - no payout
                         </div>
                     `;
                 }
             });
-            
+
             // CTP payouts
             if (gameState.ctp.results.length > 0) {
                 payouts += `
                     <div style="padding: 15px; background: #fff; border-radius: 8px;">
                         <strong>CTP Results</strong><br>
-                        ${gameState.ctp.results.map(c => 
-                            `Hole ${c.hole}: ${c.winner} (+$${c.amount})`
+                        ${gameState.ctp.results.map(c =>
+                            `Hole ${c.hole}: ${c.winner} (+$${c.amount}, others -$${(c.amount/3).toFixed(2)} each)`
                         ).join('<br>')}
                     </div>
                 `;
             }
-            
+
             payouts += '</div>';
             document.getElementById('gamePayouts').innerHTML = payouts;
-            
+
             // Final Totals
             const totalsDiv = document.getElementById('finalTotals');
             totalsDiv.innerHTML = PLAYERS.map(p => {
@@ -1646,13 +1677,12 @@
                 `;
             }).join('');
         }
-        
+
         // ==================== INITIALIZATION ====================
         function init() {
             if (loadState()) {
-                // Resume existing round
                 if (gameState.teams.team1.length > 0) {
-                    if (gameState.currentHole > 18 || 
+                    if (gameState.currentHole > 18 ||
                         (gameState.holes[17] && gameState.holes[17].belAir !== null)) {
                         showSummary();
                     } else {
@@ -1660,8 +1690,7 @@
                     }
                 }
             }
-            
-            // Check for midnight reset
+
             setInterval(() => {
                 const saved = localStorage.getItem('degenerateGolfRound');
                 if (saved) {
@@ -1670,9 +1699,9 @@
                         resetRound();
                     }
                 }
-            }, 60000); // Check every minute
+            }, 60000);
         }
-        
+
         init();
     </script>
 </body>
