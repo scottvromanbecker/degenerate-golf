@@ -1680,26 +1680,9 @@
 
         // ==================== INITIALIZATION ====================
         function init() {
-            if (loadState()) {
-                if (gameState.teams.team1.length > 0) {
-                    if (gameState.currentHole > 18 ||
-                        (gameState.holes[17] && gameState.holes[17].belAir !== null)) {
-                        showSummary();
-                    } else {
-                        showHoleTracking();
-                    }
-                }
-            }
-
-            setInterval(() => {
-                const saved = localStorage.getItem('degenerateGolfRound');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    if (data.savedDate !== new Date().toDateString()) {
-                        resetRound();
-                    }
-                }
-            }, 60000);
+            // Always start fresh - clear any saved state
+            localStorage.removeItem('degenerateGolfRound');
+            // Team selection view is shown by default (active class in HTML)
         }
 
         init();
