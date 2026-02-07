@@ -1169,11 +1169,11 @@
                 }
             }
 
-            // Process Snake
-            holeData.threePutts.forEach(player => {
-                if (!gameState.snake.currentHolders.includes(player)) {
-                    gameState.snake.currentHolders.push(player);
-                }
+            // Process Snake - whoever 3-putts takes the snake (multiple share only if same hole)
+            if (holeData.threePutts.length > 0) {
+                gameState.snake.currentHolders = [...holeData.threePutts];
+            }
+            holeData.threePutts.forEach(() => {
                 if (isBack9) {
                     gameState.snake.backPot += 10;
                 } else {
@@ -1350,11 +1350,11 @@
                     }
                 }
 
-                // Snake
-                holeData.threePutts.forEach(player => {
-                    if (!gameState.snake.currentHolders.includes(player)) {
-                        gameState.snake.currentHolders.push(player);
-                    }
+                // Snake - whoever 3-putts takes the snake (multiple share only if same hole)
+                if (holeData.threePutts.length > 0) {
+                    gameState.snake.currentHolders = [...holeData.threePutts];
+                }
+                holeData.threePutts.forEach(() => {
                     if (isBack9) {
                         gameState.snake.backPot += 10;
                     } else {
@@ -1516,15 +1516,19 @@
                 return;
             }
 
-            // Snake holders lose, non-holders split the pot
-            const winPerPerson = pot / nonHolders.length;
-            const lossPerPerson = pot / holders.length;
+            // Round pot to nearest multiple of (5 * numWinners) so each winner gets a multiple of $5
+            const roundMultiple = 5 * nonHolders.length;
+            const roundedPot = Math.round(pot / roundMultiple) * roundMultiple;
+
+            // Snake holders lose, non-holders split the rounded pot
+            const winPerPerson = roundedPot / nonHolders.length;
+            const lossPerPerson = roundedPot / holders.length;
 
             nonHolders.forEach(p => gameState.balances[p] += winPerPerson);
             holders.forEach(p => gameState.balances[p] -= lossPerPerson);
 
             gameState[`snake${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
-                holders, nonHolders, pot, winPerPerson, lossPerPerson
+                holders, nonHolders, pot, roundedPot, winPerPerson, lossPerPerson
             };
         }
 
@@ -1690,7 +1694,7 @@
                 if (result && result.holders.length > 0) {
                     payouts += `
                         <div style="padding: 15px; background: #fff; border-radius: 8px;">
-                            <strong>Snake (${nine} 9) - Pot: $${result.pot}</strong><br>
+                            <strong>Snake (${nine} 9) - Pot: $${result.pot} → Rounded: $${result.roundedPot}</strong><br>
                             Losers: ${result.holders.join(', ')} (-$${result.lossPerPerson.toFixed(2)} each)<br>
                             Winners: ${result.nonHolders.join(', ')} (+$${result.winPerPerson.toFixed(2)} each)
                         </div>
