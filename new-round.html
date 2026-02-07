@@ -1492,8 +1492,8 @@
             calculateSnakePayout(gameState.snake.backHolders, gameState.snake.backPot, 'back');
 
             // ===== WAM =====
-            calculateWamPayout(gameState.wam.frontHolder, gameState.wam.frontPot, gameState.snake.frontHolders, 'front');
-            calculateWamPayout(gameState.wam.backHolder, gameState.wam.backPot, gameState.snake.backHolders, 'back');
+            calculateWamPayout(gameState.wam.frontHolder, gameState.wam.frontPot, 'front');
+            calculateWamPayout(gameState.wam.backHolder, gameState.wam.backPot, 'back');
 
             // ===== CTP =====
             gameState.ctp.results.forEach(ctp => {
@@ -1532,39 +1532,21 @@
             };
         }
 
-        function calculateWamPayout(holder, pot, snakeHolders, nine) {
+        function calculateWamPayout(holder, pot, nine) {
             if (!holder || pot === 0) return;
 
-            // Determine payers: snake losers who are NOT the WAM winner
-            // If no snake losers, other 3 players pay
-            let payers;
-            if (snakeHolders.length > 0) {
-                payers = snakeHolders.filter(p => p !== holder);
-            } else {
-                payers = PLAYERS.filter(p => p !== holder);
-            }
-
-            if (payers.length === 0) {
-                // WAM winner is the only snake loser - no one pays them
-                gameState[`wam${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
-                    holder, pot, payers: [], payPerPerson: 0, totalReceived: 0
-                };
-                return;
-            }
-
-            // Each payer pays 1/3 of the pot
+            // Other 3 players pay equally - WAM is independent of Snake
+            const payers = PLAYERS.filter(p => p !== holder);
             const payPerPerson = pot / 3;
-            let totalReceived = 0;
 
             payers.forEach(p => {
                 gameState.balances[p] -= payPerPerson;
-                totalReceived += payPerPerson;
             });
 
-            gameState.balances[holder] += totalReceived;
+            gameState.balances[holder] += pot;
 
             gameState[`wam${nine.charAt(0).toUpperCase() + nine.slice(1)}Result`] = {
-                holder, pot, payers, payPerPerson, totalReceived
+                holder, pot, payers, payPerPerson
             };
         }
 
@@ -1705,19 +1687,12 @@
             // WAM payouts
             ['Front', 'Back'].forEach(nine => {
                 const result = gameState[`wam${nine}Result`];
-                if (result && result.holder && result.totalReceived > 0) {
+                if (result && result.holder) {
                     payouts += `
                         <div style="padding: 15px; background: #fff; border-radius: 8px;">
                             <strong>WAM (${nine} 9) - Pot: $${result.pot}</strong><br>
-                            Winner: ${result.holder} (+$${result.totalReceived.toFixed(2)})<br>
+                            Winner: ${result.holder} (+$${result.pot})<br>
                             Payers: ${result.payers.join(', ')} (-$${result.payPerPerson.toFixed(2)} each)
-                        </div>
-                    `;
-                } else if (result && result.holder && result.totalReceived === 0) {
-                    payouts += `
-                        <div style="padding: 15px; background: #fff; border-radius: 8px;">
-                            <strong>WAM (${nine} 9) - Pot: $${result.pot}</strong><br>
-                            ${result.holder} had the WAM but was sole snake loser - no payout
                         </div>
                     `;
                 }
