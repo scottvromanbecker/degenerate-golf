@@ -782,7 +782,8 @@
                     </div>
 
                     <div style="text-align: center; margin-top: 30px;">
-                        <a href="index.html" class="back-link">← Back to Leaderboard</a>
+                        <button class="btn btn-primary" onclick="goBackToEditing()" style="margin-right: 15px;">← Go Back</button>
+                        <a href="index.html" class="back-link" style="margin-top: 0;">Back to Leaderboard</a>
                         <button class="btn btn-yellow" onclick="resetRound()" style="margin-left: 15px;">Start New Round</button>
                     </div>
                 </div>
@@ -943,6 +944,14 @@
             document.getElementById('headerSubtitle').textContent = 'Round Complete';
             calculateFinalPayouts();
             renderSummary();
+        }
+
+        function goBackToEditing() {
+            // Go back to hole 18 for editing
+            gameState.currentHole = 18;
+            saveState();
+            showHoleTracking();
+            window.scrollTo(0, 0);
         }
 
         // ==================== HOLE TRACKING UI ====================
