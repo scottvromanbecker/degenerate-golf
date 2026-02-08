@@ -986,23 +986,33 @@
             const container = document.getElementById('moneySummary');
             const battle = calculateHoleBattleResults();
 
-            // Calculate Net Score leader (lowest score wins)
+            // Calculate Net Score leaders (lowest score wins) - handle ties
             const netScoreEntries = Object.entries(netScoreData)
                 .filter(([player, score]) => PLAYERS.includes(player))
                 .sort((a, b) => a[1] - b[1]); // Sort ascending (lower is better)
 
-            const netScoreLeader = netScoreEntries.length > 0 && netScoreEntries[0][1] !== 0
-                ? netScoreEntries[0][0]
-                : null;
+            // Find all players tied for the lead
+            const netScoreLeaders = [];
+            if (netScoreEntries.length > 0 && netScoreEntries[0][1] !== 0) {
+                const bestScore = netScoreEntries[0][1];
+                netScoreEntries.forEach(([player, score]) => {
+                    if (score === bestScore) netScoreLeaders.push(player);
+                });
+            }
 
-            // Calculate WAMs & Snakes leader (highest total wins)
+            // Calculate WAMs & Snakes leaders (highest total wins) - handle ties
             const wamsEntries = Object.entries(wamsData)
                 .filter(([player, score]) => PLAYERS.includes(player))
                 .sort((a, b) => b[1] - a[1]); // Sort descending (higher is better)
 
-            const wamsLeader = wamsEntries.length > 0 && wamsEntries[0][1] !== 0
-                ? wamsEntries[0][0]
-                : null;
+            // Find all players tied for the lead
+            const wamsLeaders = [];
+            if (wamsEntries.length > 0 && wamsEntries[0][1] !== 0) {
+                const bestScore = wamsEntries[0][1];
+                wamsEntries.forEach(([player, score]) => {
+                    if (score === bestScore) wamsLeaders.push(player);
+                });
+            }
 
             // Calculate GIR leader (highest total wins - Becker vs Murph only)
             const girLeader = (girData['Becker'] !== 0 || girData['Murph'] !== 0)
@@ -1029,22 +1039,30 @@
                     if (holeBattleNet !== 0) breakdownParts.push(`${battle.murphWins} holes ($${Math.abs(holeBattleNet)})`);
                 }
 
-                // Net Score ($250 bet - winner gets $750, others lose $250)
-                if (netScoreLeader) {
-                    if (player === netScoreLeader) {
-                        net += 750;
-                        breakdownParts.push('Net Score (+$750)');
+                // Net Score ($250 bet - winners split the losers' contributions)
+                if (netScoreLeaders.length > 0) {
+                    if (netScoreLeaders.includes(player)) {
+                        // Winners split the non-winners' contributions
+                        const numLosers = PLAYERS.length - netScoreLeaders.length;
+                        const loserContribution = numLosers * 250;
+                        const winnerShare = loserContribution / netScoreLeaders.length;
+                        net += winnerShare;
+                        breakdownParts.push(`Net Score (+${winnerShare})`);
                     } else {
                         net -= 250;
                         breakdownParts.push('Net Score (-$250)');
                     }
                 }
 
-                // WAMs & Snakes ($100 bet - winner gets $300, others lose $100)
-                if (wamsLeader) {
-                    if (player === wamsLeader) {
-                        net += 300;
-                        breakdownParts.push('WAMs (+$300)');
+                // WAMs & Snakes ($100 bet - winners split the losers' contributions)
+                if (wamsLeaders.length > 0) {
+                    if (wamsLeaders.includes(player)) {
+                        // Winners split the non-winners' contributions
+                        const numLosers = PLAYERS.length - wamsLeaders.length;
+                        const loserContribution = numLosers * 100;
+                        const winnerShare = loserContribution / wamsLeaders.length;
+                        net += winnerShare;
+                        breakdownParts.push(`WAMs (+${winnerShare})`);
                     } else {
                         net -= 100;
                         breakdownParts.push('WAMs (-$100)');
