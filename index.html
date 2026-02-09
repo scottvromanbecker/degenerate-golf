@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -734,7 +735,7 @@
                 <span class="prize">$250</span>
             </div>
             <div class="game-desc-with-course">
-                Each player builds their ultimate 18-hole round by recording their <strong>lowest score on each hole</strong> throughout the year. Lowest composite total wins.
+                Each player builds their ultimate 18-hole round by recording their <strong>lowest NET score on each hole</strong> throughout the year. Lowest composite total wins.
                 <div class="course-info">
                     <img src="https://media.licdn.com/dms/image/v2/D560BAQFxh4cElejPuA/company-logo_200_200/B56ZjNs722HQAI-/0/1755797767696/santa_ana_country_club1901_logo?e=2147483647&v=beta&t=AiKeYCQX9ouzp2hX5BKN_TWhX6xU7a4ryTnUEXJRWuk" alt="Santa Ana CC">
                     <span>Santa Ana Country Club only</span>
@@ -751,7 +752,7 @@
                 <span class="prize">$50/hole</span>
             </div>
             <div class="game-desc-with-course">
-                Cumulative scores on each hole across all rounds. <strong>Lower total per hole</strong> at year end wins $50. 18 holes × $50 = <strong>$900 total</strong>.
+                Cumulative NET scores on each hole across all rounds. <strong>Lower total per hole</strong> at year end wins $50. 18 holes × $50 = <strong>$900 total</strong>.
                 <div class="course-info">
                     <img src="https://media.licdn.com/dms/image/v2/D560BAQFxh4cElejPuA/company-logo_200_200/B56ZjNs722HQAI-/0/1755797767696/santa_ana_country_club1901_logo?e=2147483647&v=beta&t=AiKeYCQX9ouzp2hX5BKN_TWhX6xU7a4ryTnUEXJRWuk" alt="Santa Ana CC">
                     <span>Santa Ana Country Club only</span>
@@ -829,6 +830,8 @@
             'Becker': { totals: [4, 3, 5, 5, 5, 5, 3, 5, 4, 5, 5, 3, 5, 3, 6, 4, 2, 5] },
             'Murph': { totals: [5, 4, 4, 3, 6, 4, 5, 6, 3, 6, 6, 4, 5, 4, 4, 3, 3, 5] }
         };
+
+        let holeBattleRounds = 1; // Number of rounds played for hole battle tracking
 
         // ================================================
         // GOOGLE SHEETS FETCHING
@@ -936,6 +939,11 @@
                 }
 
                 if (currentSection === 'holeBattle') {
+                    // Parse rounds count if available
+                    if (firstCell === 'Rounds:' || firstCell === 'Count:') {
+                        const count = parseInt(secondCell) || parseInt(row[1]) || 1;
+                        holeBattleRounds = count;
+                    }
                     if (firstCell === 'Total:' && sectionRow < 2) {
                         const totals = row.slice(1, 19).map(v => parseInt(v) || 0);
                         if (sectionRow === 0) {
@@ -1047,7 +1055,7 @@
                         const loserContribution = numLosers * 250;
                         const winnerShare = loserContribution / netScoreLeaders.length;
                         net += winnerShare;
-                        breakdownParts.push(`Net Score (+${winnerShare})`);
+                        breakdownParts.push(`Net Score (+$${winnerShare})`);
                     } else {
                         net -= 250;
                         breakdownParts.push('Net Score (-$250)');
@@ -1062,7 +1070,7 @@
                         const loserContribution = numLosers * 100;
                         const winnerShare = loserContribution / wamsLeaders.length;
                         net += winnerShare;
-                        breakdownParts.push(`WAMs (+${winnerShare})`);
+                        breakdownParts.push(`WAMs (+$${winnerShare})`);
                     } else {
                         net -= 100;
                         breakdownParts.push('WAMs (-$100)');
@@ -1238,6 +1246,15 @@
             for (let i = 10; i <= 18; i++) gridHtml += `<div class="battle-cell header">${i}</div>`;
             gridHtml += '<div class="battle-cell turn">IN</div>';
 
+            // Helper to format cell with total and average
+            const formatCell = (total, status) => {
+                const avg = (total / holeBattleRounds).toFixed(1);
+                return `<div class="battle-cell score ${status}">
+                    <div>${total}</div>
+                    <div style="font-size: 0.65rem; color: #888; margin-top: -2px;">${avg}</div>
+                </div>`;
+            };
+
             // Becker row
             gridHtml += '<div class="battle-cell player-label">Becker</div>';
             let beckerFront = 0, beckerBack = 0;
@@ -1246,17 +1263,19 @@
                 const m = holeBattleData['Murph'].totals[i];
                 beckerFront += b;
                 const status = b < m ? 'winning' : b > m ? 'losing' : 'tied';
-                gridHtml += `<div class="battle-cell score ${status}">${b}</div>`;
+                gridHtml += formatCell(b, status);
             }
-            gridHtml += `<div class="battle-cell turn">${beckerFront}</div>`;
+            const beckerFrontAvg = (beckerFront / holeBattleRounds).toFixed(1);
+            gridHtml += `<div class="battle-cell turn"><div>${beckerFront}</div><div style="font-size: 0.65rem; color: #666;">${beckerFrontAvg}</div></div>`;
             for (let i = 9; i < 18; i++) {
                 const b = holeBattleData['Becker'].totals[i];
                 const m = holeBattleData['Murph'].totals[i];
                 beckerBack += b;
                 const status = b < m ? 'winning' : b > m ? 'losing' : 'tied';
-                gridHtml += `<div class="battle-cell score ${status}">${b}</div>`;
+                gridHtml += formatCell(b, status);
             }
-            gridHtml += `<div class="battle-cell turn">${beckerBack}</div>`;
+            const beckerBackAvg = (beckerBack / holeBattleRounds).toFixed(1);
+            gridHtml += `<div class="battle-cell turn"><div>${beckerBack}</div><div style="font-size: 0.65rem; color: #666;">${beckerBackAvg}</div></div>`;
 
             // Murph row
             gridHtml += '<div class="battle-cell player-label">Murph</div>';
@@ -1266,17 +1285,19 @@
                 const m = holeBattleData['Murph'].totals[i];
                 murphFront += m;
                 const status = m < b ? 'winning' : m > b ? 'losing' : 'tied';
-                gridHtml += `<div class="battle-cell score ${status}">${m}</div>`;
+                gridHtml += formatCell(m, status);
             }
-            gridHtml += `<div class="battle-cell turn">${murphFront}</div>`;
+            const murphFrontAvg = (murphFront / holeBattleRounds).toFixed(1);
+            gridHtml += `<div class="battle-cell turn"><div>${murphFront}</div><div style="font-size: 0.65rem; color: #666;">${murphFrontAvg}</div></div>`;
             for (let i = 9; i < 18; i++) {
                 const b = holeBattleData['Becker'].totals[i];
                 const m = holeBattleData['Murph'].totals[i];
                 murphBack += m;
                 const status = m < b ? 'winning' : m > b ? 'losing' : 'tied';
-                gridHtml += `<div class="battle-cell score ${status}">${m}</div>`;
+                gridHtml += formatCell(m, status);
             }
-            gridHtml += `<div class="battle-cell turn">${murphBack}</div>`;
+            const murphBackAvg = (murphBack / holeBattleRounds).toFixed(1);
+            gridHtml += `<div class="battle-cell turn"><div>${murphBack}</div><div style="font-size: 0.65rem; color: #666;">${murphBackAvg}</div></div>`;
 
             gridContainer.innerHTML = gridHtml;
         }
