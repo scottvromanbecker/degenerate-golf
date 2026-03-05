@@ -884,31 +884,23 @@
                 const firstCell = (row[0] || '').toString().trim();
                 const secondCell = (row[1] || '').toString().trim();
 
-                // Detect section headers
-                if (firstCell === '$250' && secondCell === 'Net Score') {
-                    currentSection = 'netScore';
-                    sectionRow = 0;
-                    continue;
+                // Detect section headers - scan ALL cells in the row for keywords
+                const rowText = row.join(' ');
+                const rowLower = rowText.toLowerCase();
+                if (rowText.includes('$250') && rowLower.includes('net score')) {
+                    currentSection = 'netScore'; sectionRow = 0; continue;
                 }
-                if (firstCell === '$100' && (secondCell.toLowerCase().includes('wam') || secondCell.toLowerCase().includes('snake'))) {
-                    currentSection = 'wams';
-                    sectionRow = 0;
-                    continue;
+                if (rowText.includes('$100') && (rowLower.includes('wam') || rowLower.includes('snake'))) {
+                    currentSection = 'wams'; sectionRow = 0; continue;
                 }
-                if (firstCell === '$100' && (secondCell.toLowerCase().includes('gir') || secondCell.toLowerCase().includes('ctp'))) {
-                    currentSection = 'gir';
-                    sectionRow = 0;
-                    continue;
+                if (rowText.includes('$100') && (rowLower.includes('ctp') || rowLower.includes('gir') || rowLower.includes('closest'))) {
+                    currentSection = 'gir'; sectionRow = 0; continue;
                 }
-                if (firstCell === '$250' && secondCell === 'Total') {
-                    currentSection = 'best18';
-                    sectionRow = 0;
-                    continue;
+                if (rowText.includes('$250') && rowLower.includes('total')) {
+                    currentSection = 'best18'; sectionRow = 0; continue;
                 }
-                if (firstCell === '$50') {
-                    currentSection = 'holeBattle';
-                    sectionRow = 0;
-                    continue;
+                if (rowText.includes('$50') && rowLower.includes('hole')) {
+                    currentSection = 'holeBattle'; sectionRow = 0; continue;
                 }
 
                 // Parse data based on current section
@@ -951,6 +943,18 @@
                             holeBattleData['Murph'] = { totals };
                         }
                         sectionRow++;
+                    }
+                }
+            }
+
+            // Direct cell reads for WAMs (B9:B12) - overrides section-based parsing
+            // Row 9 = index 8, Row 12 = index 11
+            for (let r = 8; r <= 11; r++) {
+                if (rows[r] && rows[r].length > 1) {
+                    const player = (rows[r][0] || '').toString().trim();
+                    const val = parseFloat((rows[r][1] || '').toString().trim());
+                    if (PLAYERS.includes(player) && !isNaN(val)) {
+                        wamsData[player] = val;
                     }
                 }
             }
