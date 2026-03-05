@@ -933,6 +933,10 @@
                 // Detect section headers - scan ALL cells in the row for keywords
                 const rowText = row.join(' ');
                 const rowLower = rowText.toLowerCase();
+                // "Just for Fun" checked FIRST to prevent false matches on $250/total/hole keywords
+                if (rowLower.includes('just for fun') || rowLower.includes('just-for-fun') || rowLower.includes('justforfun')) {
+                    currentSection = 'justForFun'; sectionRow = 0; continue;
+                }
                 if (rowText.includes('$250') && rowLower.includes('net score')) {
                     currentSection = 'netScore'; sectionRow = 0; continue;
                 }
@@ -947,9 +951,6 @@
                 }
                 if (rowText.includes('$50') && rowLower.includes('hole')) {
                     currentSection = 'holeBattle'; sectionRow = 0; continue;
-                }
-                if (rowLower.includes('just for fun') || rowLower.includes('just-for-fun') || rowLower.includes('justforfun')) {
-                    currentSection = 'justForFun'; sectionRow = 0; continue;
                 }
 
                 // Parse data based on current section
@@ -979,9 +980,9 @@
                 }
 
                 if (currentSection === 'justForFun' && PLAYERS.includes(firstCell)) {
-                    eaglesData[firstCell] = parseInt(secondCell) || 0;
                     const thirdCell = (row[2] || '').toString().trim();
-                    birdiesData[firstCell] = parseInt(thirdCell) || 0;
+                    birdiesData[firstCell] = parseInt(secondCell) || 0;  // column B = birdies
+                    eaglesData[firstCell] = parseInt(thirdCell) || 0;    // column C = eagles
                 }
 
                 if (currentSection === 'holeBattle') {
