@@ -1260,11 +1260,11 @@
             holesHtml += '<div class="holes-wrapper">';
 
             // Hole numbers
-            holesHtml += '<div class="holes-grid" style="margin-bottom: 3px;">';
+            holesHtml += '<div style="display: flex; align-items: center; margin-bottom: 3px;"><span style="width: 45px; flex-shrink: 0;"></span><div class="holes-grid" style="flex: 1;">';
             for (let i = 1; i <= 18; i++) {
                 holesHtml += `<div class="hole-number">${i}</div>`;
             }
-            holesHtml += '</div>';
+            holesHtml += '</div></div>';
 
             // Becker's scores
             holesHtml += '<div style="display: flex; align-items: center; margin-bottom: 5px;"><span style="width: 45px; font-weight: 600; font-size: 0.7rem; flex-shrink: 0;">Becker</span><div class="holes-grid" style="flex: 1;">';
