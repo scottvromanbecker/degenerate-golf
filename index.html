@@ -1028,17 +1028,29 @@
                 }
             }
 
-            // Direct cell reads for Hole Battle
-            // Row 40 (index 39) = Becker totals, Row 52 (index 51) = Murph totals
-            // Col B onwards = 18 hole totals (index 1-18)
-            if (rows[39] && rows[39].length > 1) {
-                const totals = rows[39].slice(1, 19).map(v => parseInt((v || '').toString().trim()) || 0);
-                holeBattleData['Becker'] = { totals };
+            // Direct cell reads for Hole Battle (dynamic - survives inserted/deleted rows)
+            // Each player's block starts with a header row: player name in col A, "1" in col B, "2" in col C.
+            // The block's season totals are in the next row whose col A is "Total:".
+            function findHoleBattleTotals(playerName) {
+                for (let r = 0; r < rows.length; r++) {
+                    const c0 = (rows[r][0] || '').toString().trim();
+                    const c1 = (rows[r][1] || '').toString().trim();
+                    const c2 = (rows[r][2] || '').toString().trim();
+                    if (c0 === playerName && c1 === '1' && c2 === '2') {
+                        for (let t = r + 1; t < rows.length; t++) {
+                            const tf = (rows[t][0] || '').toString().trim();
+                            if (tf === 'Total:') {
+                                return rows[t].slice(1, 19).map(v => parseInt((v || '').toString().trim()) || 0);
+                            }
+                        }
+                    }
+                }
+                return null;
             }
-            if (rows[51] && rows[51].length > 1) {
-                const totals = rows[51].slice(1, 19).map(v => parseInt((v || '').toString().trim()) || 0);
-                holeBattleData['Murph'] = { totals };
-            }
+            const beckerTotals = findHoleBattleTotals('Becker');
+            const murphTotals = findHoleBattleTotals('Murph');
+            if (beckerTotals) holeBattleData['Becker'] = { totals: beckerTotals };
+            if (murphTotals) holeBattleData['Murph'] = { totals: murphTotals };
         }
 
         // Helper function to get avatar HTML
